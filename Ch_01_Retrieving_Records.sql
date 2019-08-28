@@ -121,11 +121,29 @@ where (deptno = 10
    or sal <= 2000
    ) and deptno = 20
 
+-- This query is retrieving any employee who are 
+-- (in department number 10, or getting commission, or salary <= 2000)
+-- and in deparmtnet number 20.
 
+-- 04. Retrieving a subset of columns from a table
+-- Problem: You want to see a specific columns
+select ename, deptno, sal
+from emp;
 
+-- This is super important, because when you are retrieving data across a
+-- network, you do not want to waste the bandwidth and time.
 
+-- 05. Providing meaningful names for columns
+-- Problem: Please change the names of the columns that are returned by 
+-- the queries, name it to something more meaningful.
+select sal as salary, comm as commission
+from emp;
 
+-- Using the AS keyword to give new names to columns returned by your query
+-- is known as aliasing those columns. Creating a good name can go a long way
+-- to allow yourself to be a better developer or programmer.
 
+-- 06. Referencing an 
 
 
 
