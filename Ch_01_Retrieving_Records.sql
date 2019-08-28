@@ -112,7 +112,7 @@ where deptno = 10
    or comm is not null
    or (sal <= 2000 and deptno = 20);
 
--- Parenthese affect greatly how the condition is evaluated.
+-- Discussion: Parenthese affect greatly how the condition is evaluated.
 -- Think about how different the query will be for this
 select *
 from emp
@@ -121,7 +121,7 @@ where (deptno = 10
    or sal <= 2000
    ) and deptno = 20
 
--- This query is retrieving any employee who are 
+-- Discussion: This query is retrieving any employee who are 
 -- (in department number 10, or getting commission, or salary <= 2000)
 -- and in deparmtnet number 20.
 
@@ -130,7 +130,7 @@ where (deptno = 10
 select ename, deptno, sal
 from emp;
 
--- This is super important, because when you are retrieving data across a
+-- TDiscussion: his is super important, because when retrieving data across a
 -- network, you do not want to waste the bandwidth and time.
 
 -- 05. Providing meaningful names for columns
@@ -139,15 +139,21 @@ from emp;
 select sal as salary, comm as commission
 from emp;
 
--- Using the AS keyword to give new names to columns returned by your query
+-- UDiscussion:  sing the AS keyword to give new names to columns returned 
 -- is known as aliasing those columns. Creating a good name can go a long way
 -- to allow yourself to be a better developer or programmer.
 
--- 06. Referencing an 
+-- 06. Referencing an aliased column in the where clause
+-- Problem: How to reference an aliased columns in the where clase?
+select *
+from (
+    select sal as salary, comm as commission
+) x
+where salary < 5000;
 
-
-
-
+-- The inline view is not required by all database, some all accepts it.
+-- This will come in handy when you are aggregating functions, using advanced
+-- window function and aliases.
 
 
 
