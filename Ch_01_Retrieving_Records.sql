@@ -155,7 +155,13 @@ where salary < 5000;
 -- This will come in handy when you are aggregating functions, using advanced
 -- window function and aliases.
 
+-- 07. Concatenating Column Values
+-- Problem: You want to create a new column with values from different column
+select concat(ename, ' works as a ', job) as msg
+from emp
+where deptno = 10;
 
+-- In MySQL you use concat, Oracel you use ename || ' work as a ' || job as msg
 
 
 
