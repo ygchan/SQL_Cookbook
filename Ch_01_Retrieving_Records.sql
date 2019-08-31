@@ -162,6 +162,37 @@ from emp
 where deptno = 10;
 
 -- In MySQL you use concat, Oracel you use ename || ' work as a ' || job as msg
+/* Output: 
++--------------------------+
+| msg                      |
++--------------------------+
+| CLARK WORK AS A MANAGER  |
+| KING WORK AS A PRESIDENT |
+| MILLER WORK AS A CLERK   |
++--------------------------+
+3 rows in set (0.01 sec)
+*/
+
+-- 08. Using conditional logic in a select statement
+-- If employee is paid > 4000, then produce a result (overpaid)
+-- If employee is paid < 2000, then produce a result (underpaid)
+-- If they make somewhere in between, then produced a result (OK)
+
+select ename, sal,
+    case when sal <= 2000 then 'underpaid'
+         when sal >= 4000 then 'overpaid'  
+         else 'ok'
+    end as status
+from emp; 
+
+-- This style is one of these a lot of extra padding spaces.
+-- I suppose if you have a python program that aligns it for you. That is ok.
+
+-- Case expression allows you to preform condition logic on values
+-- returned by a query. 
+
+-- The else clause is optional, if you omit it and case expression go throughs
+-- to the end, it will return a null value for that row.
 
 
 
