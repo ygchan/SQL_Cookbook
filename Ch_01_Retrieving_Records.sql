@@ -194,7 +194,35 @@ from emp;
 -- The else clause is optional, if you omit it and case expression go throughs
 -- to the end, it will return a null value for that row.
 
+-- 09. Limiting the number of rows returned
+-- Problem: You want to limit the number of rows returned, order doesn't matter
+-- and any n rows are fine.
 
+select *
+from emp limit 5;
+
+-- Note: If you are using Oracel, it is more complicated and invovles using 
+-- rownum.
+
+-- 10. Returning n random records from a table
+-- Problem: You need to generate a list of random number, and then sort it
+
+select ename, job
+from emp
+order by rand() limit 5;
+
+/* Output:
++--------+---------+
+| ename  | job     |
++--------+---------+
+| BLAKE  | MANAGER |
+| JONES  | MANAGER |
+| MILLER | CLERK   |
+| JAMES  | CLERK   |
+| SCOTT  | ANALYST |
++--------+---------+
+5 rows in set (0.02 sec)
+*/
 
 
 
