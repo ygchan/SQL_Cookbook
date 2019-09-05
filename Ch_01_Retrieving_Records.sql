@@ -224,9 +224,45 @@ order by rand() limit 5;
 5 rows in set (0.02 sec)
 */
 
+-- 11. Finding Null Values
+-- Problem: Find all the rows that are null for a particular column
 
+select *
+from emp
+where comm is null;
 
+-- Discussion: Null is never/not equal to anything, or even itself. Therefore 
+-- the analyst can't use = or != to test whether a column is null.
+-- You can do: is null, or is not null.
 
+-- 12. Transform nulls into real values
+-- Problem: Take the rows with null value and return non-null values in place
+-- of those nulls values.
+
+select coalesce(comm, 0) as comm
+from emp;
+
+/* Output:
++------+
+| comm |
++------+
+|    0 |
+|  300 |
+|  500 |
+|    0 |
+| 1400 |
+|    0 |
+|    0 |
+|    0 |
+|    0 |
+|    0 |
+|    0 |
+|    0 |
+|    0 |
+|    0 |
++------+
+14 rows in set (0.01 sec)
+*/
 
 
 
