@@ -51,19 +51,89 @@ from emp;
 
 select distinct 
 from (
-	select deptno
-	from emp
-	union all
-	select deptno
-	from emp
+   select deptno
+   from emp
+   union all
+   select deptno
+   from emp
 );
 
 -- 02. Combining related rows
+-- Problem: Get the data from multiple tables, display the name of all the
+-- employees in department 10 along with the location of each employee's dept
 
+select e.ename, d.loc
+from emp e, dept d
+where e.deptno = d.deptno
+   and e.deptno = 10;
 
+/* Output:
++--------+----------+
+| ename  | loc      |
++--------+----------+
+| CLARK  | NEW YORK |
+| KING   | NEW YORK |
+| MILLER | NEW YORK |
++--------+----------+
+3 rows in set (0.01 sec)
+*/
 
+-- Conceptually, the result set from a join is produced by first creating a
+-- cartesian product (all possible combinations), and restrict the result
+-- that matches the where expression.
 
+-- equi-join: the join condition is based on an equality condition.
+-- Use the join clause if you prefer to have the join logic in from clause
+-- rather than the where clause.
 
+-- 03. Finding rows in common between 2 tables
+-- Problem: Another example of inner join
+
+create view v as
+select ename, job, sal
+from emp
+where job = 'CLERK';
+
+select e.empno, e.ename, e.job, e.sal, e.deptno
+from emp e 
+   inner join v on (
+      e.ename = v.ename
+      and e.job = v.job
+      and e.sal = v.sal
+   )
+;
+
+/* Output:
++-------+--------+-------+------+--------+
+| empno | ename  | job   | sal  | deptno |
++-------+--------+-------+------+--------+
+|  7369 | SMITH  | CLERK |  800 |     20 |
+|  7876 | ADAMS  | CLERK | 1100 |     20 |
+|  7900 | JAMES  | CLERK |  950 |     30 |
+|  7934 | MILLER | CLERK | 1300 |     10 |
++-------+--------+-------+------+--------+
+4 rows in set (0.02 sec)
+*/
+
+-- 04. Retrieving values from one table that do not exist in another
+-- Problem: Using not in () expression in where clause
+
+-- Note: In DB2 you use set operation (except)
+--       In Oracle you use set operation (minus)
+
+-- This is MySQL solution
+select deptno 
+from dept
+where deptno not in (select deptno from emp);
+
+/* Output:
++--------+
+| deptno |
++--------+
+|     40 |
++--------+
+1 row in set (0.01 sec)
+*/
 
 
 
