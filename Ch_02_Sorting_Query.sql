@@ -74,6 +74,56 @@ order by substr(job, length(job)-1);
 14 rows in set (0.01 sec)
 */
 
+-- 04. Sorting Mixed Alphanumeric Data
+-- Problem: You have a mixed alphanumeric data and want to sort by either
+-- the numeric or character portion of the data.
+
+-- MySQL doesn't have this implementation solution
+-- But it is using replace / translate in Oracle.
+
+-- 05. Dealing with Nulls when sorting
+-- Problem: You are dealing with column with null values, you
+-- might to sort null first (to the top), or sort null last (to the bottom)
+
+/* Non-null commission sorted ascending, all nulls last */
+select ename, sal, comm, is_null
+from (
+    select ename, sal, comm,
+        case when comm is null then 0 else 1 end as is_null
+    from emp
+) x
+order by is_null desc, comm;
+
+SET ANSI_WARNINGS ON;
+
+/* Output:
++--------+------+------+---------+
+| ename  | sal  | comm | is_null |
++--------+------+------+---------+
+| TURNER | 1500 |    0 |       1 |
+| ALLEN  | 1600 |  300 |       1 |
+| WARD   | 1250 |  500 |       1 |
+| MARTIN | 1250 | 1400 |       1 |
+| SMITH  |  800 | NULL |       0 |
+| KING   | 5000 | NULL |       0 |
+| ADAMS  | 1100 | NULL |       0 |
+| JONES  | 2975 | NULL |       0 |
+| JAMES  |  950 | NULL |       0 |
+| FORD   | 3000 | NULL |       0 |
+| BLAKE  | 2850 | NULL |       0 |
+| MILLER | 1300 | NULL |       0 |
+| CLARK  | 2450 | NULL |       0 |
+| SCOTT  | 3000 | NULL |       0 |
++--------+------+------+---------+
+14 rows in set (0.00 sec)
+*/
+
+-- Discussion: Calculate an is_null field within the inline view,
+-- then sort it (but don't bring it into the select). This is a great example
+-- of order by a column that is not selected.
+-- With this case (when) else end as, all happened in one line.
+
+-- 06. Sorting on data dependent key (!!!)
 
 
 
