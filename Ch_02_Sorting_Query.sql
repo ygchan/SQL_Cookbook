@@ -124,15 +124,65 @@ SET ANSI_WARNINGS ON;
 -- With this case (when) else end as, all happened in one line.
 
 -- 06. Sorting on data dependent key (!!!)
+-- Problem: You want to sort by conditional logic.
+-- For example, if job title = sales man, sort by commission
+--              if job title = other    , sort by salary.
 
+select job, ename, sal, comm
+from emp
+order by case when job = 'SALESMAN' then comm else sal end;
 
+/* Output:
++-----------+--------+------+------+
+| job       | ename  | sal  | comm |
++-----------+--------+------+------+
+| SALESMAN  | TURNER | 1500 |    0 |
+| SALESMAN  | ALLEN  | 1600 |  300 |
+| SALESMAN  | WARD   | 1250 |  500 |
+| CLERK     | SMITH  |  800 | NULL |
+| CLERK     | JAMES  |  950 | NULL |
+| CLERK     | ADAMS  | 1100 | NULL |
+| CLERK     | MILLER | 1300 | NULL |
+| SALESMAN  | MARTIN | 1250 | 1400 |
+| MANAGER   | CLARK  | 2450 | NULL |
+| MANAGER   | BLAKE  | 2850 | NULL |
+| MANAGER   | JONES  | 2975 | NULL |
+| ANALYST   | FORD   | 3000 | NULL |
+| ANALYST   | SCOTT  | 3000 | NULL |
+| PRESIDENT | KING   | 5000 | NULL |
++-----------+--------+------+------+
+14 rows in set (0.00 sec)
+*/
 
+-- This is extremely interesting, I have never done this.
+-- I wonder if this can be used in SAS at work??
+-- Use a CASE expression in the order by clause.
 
+-- Or another way, this is more easy to understand.
+-- But a little bit less efficient (sorting extra column).
+select ename, sal, job, comm,
+    case when job = 'SALESMAN' then comm else sal end as ordered
+from emp
+order by 5;
 
-
-
-
-
-
-
-
+/* Output:
++--------+------+-----------+------+---------+
+| ename  | sal  | job       | comm | ordered |
++--------+------+-----------+------+---------+
+| TURNER | 1500 | SALESMAN  |    0 |       0 |
+| ALLEN  | 1600 | SALESMAN  |  300 |     300 |
+| WARD   | 1250 | SALESMAN  |  500 |     500 |
+| SMITH  |  800 | CLERK     | NULL |     800 |
+| JAMES  |  950 | CLERK     | NULL |     950 |
+| ADAMS  | 1100 | CLERK     | NULL |    1100 |
+| MILLER | 1300 | CLERK     | NULL |    1300 |
+| MARTIN | 1250 | SALESMAN  | 1400 |    1400 |
+| CLARK  | 2450 | MANAGER   | NULL |    2450 |
+| BLAKE  | 2850 | MANAGER   | NULL |    2850 |
+| JONES  | 2975 | MANAGER   | NULL |    2975 |
+| FORD   | 3000 | ANALYST   | NULL |    3000 |
+| SCOTT  | 3000 | ANALYST   | NULL |    3000 |
+| KING   | 5000 | PRESIDENT | NULL |    5000 |
++--------+------+-----------+------+---------+
+14 rows in set (0.00 sec)
+*/
