@@ -135,6 +135,52 @@ where deptno not in (select deptno from emp);
 1 row in set (0.01 sec)
 */
 
+/*
+(base) Georges-MacBook-Air:~ Study$ export PATH=$PATH:/usr/local/mysql/bin
+(base) Georges-MacBook-Air:~ Study$ mysql -u Study -p bank
+*/
+
+select deptno
+from dept
+where deptno in (10, 50, null);
+
+/* Output:
++--------+
+| deptno |
++--------+
+|     10 |
++--------+
+1 row in set (0.01 sec)
+*/
+
+-- Note that the following Truth table:
+-- T OR NULL  --> NULL
+-- NOT (NULL) --> NULL
+-- AND (NULL) --> NULL
+
+-- You must keep this in mind in SQL, True or Null is True, but False or Null
+-- is Null. You must keep this in mind when using in predicates and when 
+-- performing logical or evaluation.
+
+-- To avoid this problem with not in and nulls. Please use a coorelated 
+-- subquery in conjunction with not exists. 
+
+select d.deptno
+from dept d
+where not exists (
+   select 1
+   from emp e
+   where d.deptno = e.deptno
+);
+
+/* Output:
++--------+
+| deptno |
++--------+
+|     40 |
++--------+
+1 row in set (0.01 sec)
+*/
 
 
 
