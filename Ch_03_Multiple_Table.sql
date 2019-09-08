@@ -182,8 +182,27 @@ where not exists (
 1 row in set (0.01 sec)
 */
 
+-- 05. Retrieving rows from one table that do not correspond to rows in another
+-- Problem: equi-join only returns condition satisfy, but what if you want to
+-- get only items that are not match?
 
+select d.*
+from dept d 
+   left outer join emp e on (d.deptno = e.deptno)
+where e.deptno is null;
 
+/* Output:
++--------+------------+--------+
+| DEPTNO | DNAME      | LOC    |
++--------+------------+--------+
+|     40 | OPERATIONS | BOSTON |
++--------+------------+--------+
+1 row in set (0.02 sec)
+*/
+
+-- Discussion: This is the case you want to do a left outer join, and filter
+-- or display result only with a null value on the e.deptno column. In other 
+-- words, keeping the results with no match.
 
 
 
