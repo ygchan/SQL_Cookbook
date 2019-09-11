@@ -204,6 +204,9 @@ where e.deptno is null;
 -- or display result only with a null value on the e.deptno column. In other 
 -- words, keeping the results with no match.
 
+-- 06. Adding joins to a query without interfering with other join
+-- Problem: Return additional results if and only if they are avaiable.
+
 
 
 
