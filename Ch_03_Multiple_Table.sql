@@ -207,9 +207,29 @@ where e.deptno is null;
 -- 06. Adding joins to a query without interfering with other join
 -- Problem: Return additional results if and only if they are avaiable.
 
+select e.ename, d.loc, eb.received
+from emp e
+   inner join dept d on (e.deptno = d.deptno)
+   left join emp_bonus eb on (e.empno = eb.empno)
+order by 2;
 
+-- Discussion: Using left join allows you to show all the employee 
+-- with any matched employee bonus received data.
 
+-- 07. Determining whether two table have the same data
+-- Problem: You want to know if 2 tables/views have the same data
 
+-- Solution: Use a correlated subquery and union all to find the rows
+-- in view V and not in table EMP combined with the rows in the table
+-- EMP and not in view V.
+
+select *
+from (
+   select e.empno, e.ename, e.job, e.mgr, e.hiredate,
+          e.sal, e.comm, e.deptno, count(*) as cnt 
+   from emp e
+   /* .... */
+)
 
 
 
