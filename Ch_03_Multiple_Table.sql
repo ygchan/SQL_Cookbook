@@ -231,6 +231,39 @@ from (
    /* .... */
 )
 
+-- 08. Identifying and avoiding cartesian products
+-- You want the name of each employee in department 10 along
+-- with the location of the department.
+
+select e.ename, d.loc
+from emp e, detp d
+where e.deptno = 10;
+
+-- This has no join and returned a cartesian product!
+-- Correct answer is with a join. Because there was no filter
+-- all the rows are returned and multiplied.
+
+select e.ename, d.loc
+from emp e, dept d
+where e.deptno = 10
+   and d.deptno = e.deptno;
+
+/* Output:
++--------+----------+
+| ename  | loc      |
++--------+----------+
+| CLARK  | NEW YORK |
+| KING   | NEW YORK |
+| MILLER | NEW YORK |
++--------+----------+
+3 rows in set (0.02 sec)
+*/
+
+-- Discussion: Apply the n-1 rule (represent) the number of minimum number
+-- of joins necessary to avoid a Cartesian product. Interestingly if you use
+-- the cartesian product properly, it can be used to transpose or pivot.
+-- or mimicking a loop.
+
 
 
 
