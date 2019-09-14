@@ -264,6 +264,29 @@ where e.deptno = 10
 -- the cartesian product properly, it can be used to transpose or pivot.
 -- or mimicking a loop.
 
+-- 09. Performing joins when using aggregates
+-- Problem: You need to join multiple tables, but also ensure the join
+-- do not distrupt the aggregation.
+
+-- Use distinct inside the sum() function
+select deptno,
+   sum(distinct sal) as total_sal,
+   sum(bonus) as total_bonus
+from (
+   e.empno,
+   e.ename,
+   e.sal,
+   e.deptno,
+   e.sal * case when eb.type = 1 then .1
+                when eb.type = 2 then .2
+                else .3
+           end as bonus
+   from emp p
+      inner join emp_bonus eb
+   where e.deptno = 10 
+) x /* Inline view */
+group by deptno;
+
 
 
 
