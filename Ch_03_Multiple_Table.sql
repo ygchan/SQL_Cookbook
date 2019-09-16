@@ -281,12 +281,38 @@ from (
                 when eb.type = 2 then .2
                 else .3
            end as bonus
-   from emp p
+   from emp e
       inner join emp_bonus eb
    where e.deptno = 10 
 ) x /* Inline view */
 group by deptno;
 
+-- 10. Performing outer join when using aggregates
+-- Problem: You need to use left outer join. Because the problem has changed
+-- to where not all employee in department 10 have been given bonus.
+
+select deptno,
+       sum(distinct sal) as total_sal,
+       sum(bons) as total_bonus
+  from (
+select e.empno,
+       e.ename,
+       e.departno,
+       e.sal * case when eb.type is null then 0
+                    when eb.type = 1 then .1
+                    when eb.type = 2 then .2
+                    else .3 end as bonus
+  from emp e left outer join emp_bonus eb
+    on (e.empno = eb.empno)
+  where e.deptno = 10
+    )
+  group by deptno;
+
+-- Discussion : I noticed the author has an neat style of indentation...
+-- it is adding extra spaces to line up the selected columns.
+-- and within the inline view table, the select also started within the block
+-- this has a benefit of not running out of spaces when nesting.
+-- I wonder if this can be applied to the working projects.
 
 
 
