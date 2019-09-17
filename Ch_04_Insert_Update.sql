@@ -32,3 +32,12 @@ values (50, 'Programming', 'Baltimore');
 -- But if you don't list your target columns, you must insert into all the
 -- columns and be mindful of the order in the value lists.
 
+-- 02. Inserting default values
+-- Problem: You want to insert the default value into a table
+
+insert into D values (default);
+
+-- If you are not inserting into all the columns of a table, you need 
+-- to specify the column name.
+
+insert into D (id) values (default);
