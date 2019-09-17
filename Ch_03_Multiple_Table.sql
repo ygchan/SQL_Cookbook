@@ -331,7 +331,45 @@ from dept d left outer join emp e on (d.deptno = e.deptno);
 -- implementation, is it the same as right outer join union left outer join?
 -- It sure looks like it.
 
+-- Book: The full outer join is simply the combinatino of outer joins on both
+-- tables. runs each other join and then union the result sets.
 
+-- 12. Using nulls in operations and comparisions
+-- Problem: null is never equal to or not equal to any value, not even itself.
+-- You want to find all employees in emp whose commission (comm) is less than
+-- the comission of employee 'ward'. Employees with a null commission should 
+-- be included as well.
+
+select ename, comm
+from emp
+where coalesce(comm, 0) < (select comm
+                           from emp
+                           where ename = 'WARD');
+
+/* Output:
++--------+------+
+| ename  | comm |
++--------+------+
+| SMITH  | NULL |
+| ALLEN  |  300 |
+| JONES  | NULL |
+| BLAKE  | NULL |
+| CLARK  | NULL |
+| SCOTT  | NULL |
+| KING   | NULL |
+| TURNER |    0 |
+| ADAMS  | NULL |
+| JAMES  | NULL |
+| FORD   | NULL |
+| MILLER | NULL |
++--------+------+
+*/
+
+-- Discussion: The trick in this problem is, if it is null, you are supposed
+-- to still compare if that amount is less than WARD's commission. Therefore
+-- essentially you want to count null as 0. But MySQL doesn't allow you to 
+-- compare null to any value. So you have to use coalesec to detect if a null
+-- values appears. If so substitute it with 0.
 
 
 
