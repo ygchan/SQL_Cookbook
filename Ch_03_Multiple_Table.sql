@@ -314,6 +314,24 @@ select e.empno,
 -- this has a benefit of not running out of spaces when nesting.
 -- I wonder if this can be applied to the working projects.
 
+-- 11. Returning missing data from multiple tables
+-- Problem: There are claims without a provider, and there are provider without
+-- a claim. In order to solve this, you will need to use full outer join.
+
+-- But in MySQL, it does not have a full outer join implemented.
+-- Hence you have to do union.
+
+select d.deptno, d.dname, e.ename
+from dept d right outer join emp e on (d.deptno = e.deptno)
+union /* notice it is a union, not union all :) */
+select d.deptno, d.dname, e.ename
+from dept d left outer join emp e on (d.deptno = e.deptno);
+
+-- Discussion: I started to wonder if full outer join in other vendor 
+-- implementation, is it the same as right outer join union left outer join?
+-- It sure looks like it.
+
+
 
 
 
