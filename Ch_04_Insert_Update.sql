@@ -41,3 +41,24 @@ insert into D values (default);
 -- to specify the column name.
 
 insert into D (id) values (default);
+
+-- MySQL has another option, to create the new table with default values!
+
+create table d (id integer default 0, foo varchar(10));
+insert into D (foo) values ('Bar');
+
+-- Discussion: You don't have to include the non-default column in the insert 
+-- list. ID takes on the default value because no other value is specified.
+
+-- 03. Overriding a default value with NULL
+-- Problem: You are inserting into a column with default value, and you wish
+-- to override that default value by setting the column to NULL.
+
+-- Consider this example:
+create table D (id integer default 0, 
+			    foo varchar(10));
+
+-- Solution: You can explicitly specify null in your value list
+insert into d (id, foo) values (null, 'Brighten');
+
+	
