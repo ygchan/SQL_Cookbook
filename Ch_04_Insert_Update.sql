@@ -61,4 +61,11 @@ create table D (id integer default 0,
 -- Solution: You can explicitly specify null in your value list
 insert into d (id, foo) values (null, 'Brighten');
 
-	
+-- 04. Copying rows from one table into another
+-- Problem: You want to query some rows, and then insert these rows into 
+-- another table. 
+
+insert into dept_east(deptno, dname, loc)
+select deptno, dname, loc
+from dept
+where loc in ('New York', 'Boston');
