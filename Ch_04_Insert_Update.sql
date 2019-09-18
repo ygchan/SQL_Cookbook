@@ -69,3 +69,39 @@ insert into dept_east(deptno, dname, loc)
 select deptno, dname, loc
 from dept
 where loc in ('New York', 'Boston');
+
+-- George: You use the insert into keyword <table_name> (column_list)
+--                     select ... from ... where
+-- Simply follow the insert statement with a query that returns the desired
+-- rows. If you want to copy the entire table, then write it without the where
+-- clause.
+
+-- 05. Copying a table definition
+-- Problem: You want to copy the structure of the table, but not the data rows.
+
+create table dept_2 as 
+select *
+from dept
+where 1 = 0;
+
+/* Output: 
+mysql> create table dept_2 as 
+    -> select *
+    -> from dept
+    -> where 1 = 0;
+Query OK, 0 rows affected (0.16 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from dept_2;
+Empty set (0.01 sec)
+
+mysql> desc dept_2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| DEPTNO | int(11)     | YES  |     | NULL    |       |
+| DNAME  | varchar(14) | YES  |     | NULL    |       |
+| LOC    | varchar(13) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.03 sec)
+*/
