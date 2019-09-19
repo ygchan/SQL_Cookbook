@@ -113,3 +113,7 @@ mysql> desc dept_2;
 -- 06. Insert into multiple tables at once
 -- MySQL does not support.
 
+-- 07. Blocking insert for a particular rows
+-- Problem: You don't want to allow user to insert a certain Field
+
+-- Solution: Block them using views
