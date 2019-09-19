@@ -105,3 +105,11 @@ mysql> desc dept_2;
 +--------+-------------+------+-----+---------+-------+
 3 rows in set (0.03 sec)
 */
+
+-- Discussion: 1 = 0 (that is not possible!)
+-- No rows will be copied if you specify a false conditino (1 = 0) is going to 
+-- be false on every row.
+
+-- 06. Insert into multiple tables at once
+-- MySQL does not support.
+
