@@ -14,13 +14,13 @@
 -- and loc - baltimore.
 
 insert into dept (detpno, dname, loc)
-	values (50, 'Programming', 'Baltimore');
+   values (50, 'Programming', 'Baltimore');
 
 -- interestingly for DB2 and MySQL
 /* Multiple row insert */
 insert into dept (detpno, dname, loc)
-	values (a, 'A', 'B'),
-		   (2, 'B', 'C');
+   values (a, 'A', 'B'),
+         (2, 'B', 'C');
 
 -- Discussion: The sytnax for inserting a single row is consistent across all
 -- the database vendors!
@@ -56,7 +56,7 @@ insert into D (foo) values ('Bar');
 
 -- Consider this example:
 create table D (id integer default 0, 
-			    foo varchar(10));
+             foo varchar(10));
 
 -- Solution: You can explicitly specify null in your value list
 insert into d (id, foo) values (null, 'Brighten');
@@ -117,3 +117,58 @@ mysql> desc dept_2;
 -- Problem: You don't want to allow user to insert a certain Field
 
 -- Solution: Block them using views
+
+-- 08. Modifying records in a table
+-- Problem: You want to increase the salaries of everyone in the department 
+-- by 20%.
+
+select deptno, ename, sal
+from emp
+where deptno = 20
+order by 1, 3;
+
+/* Output:
++--------+-------+------+
+| deptno | ename | sal  |
++--------+-------+------+
+|     20 | SMITH |  800 |
+|     20 | ADAMS | 1100 |
+|     20 | JONES | 2975 |
+|     20 | SCOTT | 3000 |
+|     20 | FORD  | 3000 |
++--------+-------+------+
+5 rows in set (0.01 sec)
+*/
+
+-- Solution: Use the update statement
+update emp
+   set sal = sal*1.20
+   where deptno = 20; 
+
+-- Discussion: If you do not include a where clause, then all rows will be
+-- updated. You don't want to give EVERYONE in every department a raise right?
+
+-- When you are doing a massive update, it is better to use a select statement
+-- first. Like this one below to check what is the before/after effect.
+
+select deptno,
+   ename,
+   sal as orig_sal,
+   sal*.2 as amt_to_add,
+   sal*1.2 as new_sal
+from emp
+where deptno = 20
+order by 1, 5;
+
+/* Output:
++--------+-------+----------+------------+---------+
+| deptno | ename | orig_sal | amt_to_add | new_sal |
++--------+-------+----------+------------+---------+
+|     20 | SMITH |      960 |      192.0 |  1152.0 |
+|     20 | ADAMS |     1320 |      264.0 |  1584.0 |
+|     20 | JONES |     3570 |      714.0 |  4284.0 |
+|     20 | SCOTT |     3600 |      720.0 |  4320.0 |
+|     20 | FORD  |     3600 |      720.0 |  4320.0 |
++--------+-------+----------+------------+---------+
+5 rows in set (0.01 sec)
+*/
