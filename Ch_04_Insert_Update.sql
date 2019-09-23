@@ -172,3 +172,23 @@ order by 1, 5;
 +--------+-------+----------+------------+---------+
 5 rows in set (0.01 sec)
 */
+
+-- 09. Updating when corresponding rows exits
+-- Problem: Update the table when corresponding rows exists in another table.
+
+update emp
+set sal = sal*1.20
+where empno in (select empno from emp_bonus);
+
+-- Solution: Use a subquery to represents the rows that will be updated
+-- in the table EMP. The in predicates test values of empno from emp table.
+
+-- Alternatively (more complicated)
+update emp
+set sal = sal*1.20
+where exits (select null
+             from emp_bonus
+             where emp.empno=emp_bonus.empno);
+
+-- The author like this answer more, because select nulls has nothing to
+-- do with exits, given the empno matches. 
