@@ -192,3 +192,63 @@ where exits (select null
 
 -- The author like this answer more, because select nulls has nothing to
 -- do with exits, given the empno matches. 
+
+-- 10. Updating values from another table
+-- Problem: You want to update the commission from one table to another
+-- if they matches by the rows, and 50% in the commission.
+
+select deptno, ename, sal, comm
+from emp
+order by 1;
+
+/* Output:
++--------+--------+------+------+
+| deptno | ename  | sal  | comm |
++--------+--------+------+------+
+|     10 | MILLER | 1300 | NULL |
+|     10 | KING   | 5000 | NULL |
+|     10 | CLARK  | 2450 | NULL |
+|     20 | FORD   | 3600 | NULL |
+|     20 | ADAMS  | 1320 | NULL |
+|     20 | SCOTT  | 3600 | NULL |
+|     20 | JONES  | 3570 | NULL |
+|     20 | SMITH  |  960 | NULL |
+|     30 | BLAKE  | 2850 | NULL |
+|     30 | MARTIN | 1250 | 1400 |
+|     30 | TURNER | 1500 |    0 |
+|     30 | WARD   | 1250 |  500 |
+|     30 | JAMES  |  950 | NULL |
+|     30 | ALLEN  | 1600 |  300 |
++--------+--------+------+------+
+14 rows in set (0.01 sec)
+*/
+
+-- Hinit: It is common to perform this update using coorelated subquery.
+-- Another technique involes create a view (traditional or inline) and then
+-- update that view.
+
+update emp e, new_sal ns
+set e.sal = ns.sal,
+  e.comm = ns.sal/2
+where e.deptno = ns.deptno;
+
+-- Would this work for SAS? I must try this tomorrow!!
+-- Note: A where caluse in the subquery (coorelated subquery) is not the same 
+-- as the where clause of the table updated.
+
+-- Coorelated subquery or synchronized subquery is a subquery (query nested
+-- inside another query) that uses value from the outer query.
+
+/* Example:
+select employee_number, name
+from employee emp
+where salary > (
+  select avg(salary)
+  from employee
+  where department = emp.department);
+*/
+
+-- But authoer quickly pointed out, if the new_salary does not have any 
+-- other department, THEN they will set to NULL. (Oracle...)
+
+-- MySQL, SQL Server this approach is fine.
