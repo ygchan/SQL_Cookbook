@@ -252,3 +252,14 @@ where salary > (
 -- other department, THEN they will set to NULL. (Oracle...)
 
 -- MySQL, SQL Server this approach is fine.
+
+-- 11. Merging Records (NA)
+
+-- 12. Deleting all records from a table
+-- Problem: Delete all records from a table.
+
+delete from emp;
+
+-- 13. Deleting specific records
+
+delete from emp where deptno = 10;
