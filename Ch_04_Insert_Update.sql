@@ -257,9 +257,41 @@ where salary > (
 
 -- 12. Deleting all records from a table
 -- Problem: Delete all records from a table.
-
 delete from emp;
 
 -- 13. Deleting specific records
-
 delete from emp where deptno = 10;
+
+-- 14. Deleting a single record
+-- Problem: Delete a single primary key (specify only one)
+delete from emp where empno = 7783;
+
+-- Discussion, this gives more reason to have a primary key that is distinct
+-- non-missing. Keep that in mind when you design your database schema.
+
+-- Check first if your key is indeed unique. 
+
+-- 15. Deleting referential integrity violations
+-- Problem: Delete records that points to a non-existing deptno
+
+delete from emp
+where not exists(
+  select * from dept
+  where dept.detpno = emp.deptno
+);
+
+-- or you can use not in
+delete from emp
+where deptno not in (select deptno from dept);
+
+-- 16. Deleting duplicate records
+-- Problem: Remove any duplicates and keep only 1 copy
+
+delete from dupes
+where id not in (
+select min(id)
+from (select id, name from dupes) temp
+group by name
+);
+
+-- I think this is the solution for PROC SQL.
