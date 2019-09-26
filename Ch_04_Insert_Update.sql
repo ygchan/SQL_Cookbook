@@ -295,3 +295,8 @@ group by name
 );
 
 -- I think this is the solution for PROC SQL.
+-- You can not reference the same table twice in the delete.
+-- Using this the data is returned in an inline view temp table.
+
+-- Duplicate is consider as: 2 records w/ same value in their name column.
+-- I think it is important to have id in every table as primary key.
