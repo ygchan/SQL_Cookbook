@@ -300,3 +300,16 @@ group by name
 
 -- Duplicate is consider as: 2 records w/ same value in their name column.
 -- I think it is important to have id in every table as primary key.
+
+-- 17. Deleting records referenced from another table
+-- Problem: You have a lot of accident in a certain department, so write
+-- a subquery to query the accident table, and then use delete statement
+-- to remove employee (fire) them if they are in that department.
+
+delete from emp
+where deptno in ( select deptno 
+                  from dept_accidents
+                  group by deptno
+                  having count(*) >= 3 );
+
+-- The subquery determine and find out which department should be fired.
