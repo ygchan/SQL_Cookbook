@@ -48,3 +48,31 @@ where table_schema = 'bank';
 +------------------------+
 29 rows in set (0.01 sec)
 */
+
+-- Information schema, a set of views defined by ISO SQL standard
+
+-- 02. Listing a table's columns
+-- Problem: You want to list the columns in a table, along with their data
+-- types and positions in the table they are in.
+
+select column_name, data_type, ordinal_position
+from information_schema.columns
+where table_schema = 'bank'
+	and table_name = 'emp';
+
+/* Output:
++-------------+-----------+------------------+
+| column_name | data_type | ordinal_position |
++-------------+-----------+------------------+
+| EMPNO       | int       |                1 |
+| ENAME       | varchar   |                2 |
+| JOB         | varchar   |                3 |
+| MGR         | int       |                4 |
+| HIREDATE    | date      |                5 |
+| SAL         | int       |                6 |
+| COMM        | int       |                7 |
+| DEPTNO      | int       |                8 |
++-------------+-----------+------------------+
+8 rows in set (0.01 sec)
+*/
+
