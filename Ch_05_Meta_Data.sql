@@ -76,3 +76,27 @@ where table_schema = 'bank'
 8 rows in set (0.01 sec)
 */
 
+-- There are additional useful information in information_schema.columns
+-- such as column name, data type, ordinal_position.
+
+-- 03. Listing indexed columns for table
+-- Problem: You want to list indexes, their columns and column position
+
+show index from emp;
+
+-- When it comes to query, it is important to know what columns are/aren't
+-- indexed. Indexes can provide good performance for queries against columns
+-- that aren't fairly selective.
+
+-- Additionally, how deep is the index, how many distinct keys and leaf block.
+
+
+
+
+
+
+
+
+
+
+
