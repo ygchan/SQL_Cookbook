@@ -10,10 +10,42 @@
 -- The first and most important fundamental operation: traverse a string
 -- one character at a time. (SQL does not have a loop).
 
+-- 01. Walking a string
+-- Problem: Traverse a string to return each character as a row.
 
+/* where to download the code */
 
+CREATE TABLE T10 (ID INTEGER);
+INSERT INTO T10 VALUES (1);
+INSERT INTO T10 VALUES (2);
+INSERT INTO T10 VALUES (3);
+INSERT INTO T10 VALUES (4);
+INSERT INTO T10 VALUES (5);
+INSERT INTO T10 VALUES (6);
+INSERT INTO T10 VALUES (7);
+INSERT INTO T10 VALUES (8);
+INSERT INTO T10 VALUES (9);
+INSERT INTO T10 VALUES (10);
 
+select substr(e.ename, iter.pos, 1) as c, iter.pos
+from (select ename from emp where ename = 'KING') e,
+     (select id as pos from t10) iter
+where iter.pos <= length(e.ename);
 
+/* Output: 
++------+------+
+| c    | pos  |
++------+------+
+| K    |    1 |
+| I    |    2 |
+| N    |    3 |
+| G    |    4 |
++------+------+
+4 rows in set (0.01 sec)
+*/
+
+-- Discussion: Use a cartesian product to generate the number of rows need
+-- to return each character of string on its own line.
 
 
 
