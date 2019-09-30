@@ -98,7 +98,27 @@ where iter.pos <= length(e.ename);
 4 rows in set (0.02 sec)
 */
 
+-- TSQL
+-- Table creation logic
+CREATE TABLE testtable ([col1] [int] NOT NULL primary key,
+                        [col2] [int] NULL,
+                        [col3] [int] NULL,
+                        [col4] [varchar](50) NULL);
+                        
+-- Populate table
+DECLARE @val INT
+SELECT @val=1
+WHILE @val <= 200000
+BEGIN  
+   INSERT INTO testtable (col1, col2, col3, col4) 
+       VALUES (@val,@val % 10,@val,'TEST' + CAST(@val AS VARCHAR))
+   SELECT @val=@val+1
+END
+GO
 
+SELECT * FROM [testtable] WHERE [col3]=11493
+GO
+-- End of TSQL
 
 
 
