@@ -98,6 +98,14 @@ where iter.pos <= length(e.ename);
 4 rows in set (0.02 sec)
 */
 
+-- Another variation
+select substr(e.ename, iter.pos) a
+       -- This show a different out come, G, NG, ING and KING
+       substr(e.ename, length(e.ename)-iter.pos+1) b
+from (select ename from emp where ename = 'KING') e,
+     (select id pos from t10) tier
+where iter.pos <= length(e.ename);
+
 -- TSQL
 -- Table creation logic
 CREATE TABLE testtable ([col1] [int] NOT NULL primary key,
