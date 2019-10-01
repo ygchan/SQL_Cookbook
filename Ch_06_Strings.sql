@@ -149,7 +149,49 @@ from t1;
 -- Discussion: keep in mind that string literal comprising two quotes
 -- alone, with no intervening character is null.
 
+-- 03. Counting the occurrences of a character in a string
+-- Problem: You want to count the number of times a character (comma)
+-- occured within a given string.
 
+set @my_string = '10,clark,manager';
+
+/*
+mysql> set @my_string = '10,clark,manager';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select @my_string;
++------------------+
+| @my_string       |
++------------------+
+| 10,clark,manager |
++------------------+
+1 row in set (0.01 sec)
+*/
+
+select (length(@my_string)-
+        length(replace(@my_string, ',', '')))/length(',')
+       as cnt
+from t1;
+
+/* Output:
++--------+
+| cnt    |
++--------+
+| 2.0000 |
++--------+
+1 row in set (0.00 sec)
+*/
+
+/* Quickly creating t1 */
+create table t1(
+  id int
+);
+insert into t1(id) values(1);
+
+-- Discussion: It works by
+-- Finding the length of the word - 
+--         the length of the word replaced the search symbol with nothing
+-- And repeate it that many times (t1)
 
 
 
