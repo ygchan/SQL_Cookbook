@@ -128,7 +128,26 @@ SELECT * FROM [testtable] WHERE [col3]=11493
 GO
 -- End of TSQL
 
+-- 02. Embedding Quotes within string literals
+-- Problem: You want to embed quote marks within strings
+-- like 'g'day mate'
 
+-- Solution: You need to use two quotes to "escape" one.
+
+select 'apple core', 'apple''s core',
+       case when '' is null then 0 else 1 end
+from t1;
+
+/* Output:
++------------+--------------+----------------------------------------+
+| apple core | apple's core | case when '' is null then 0 else 1 end |
++------------+--------------+----------------------------------------+
+| apple core | apple's core |                                      1 |
++------------+--------------+----------------------------------------+
+*/
+
+-- Discussion: keep in mind that string literal comprising two quotes
+-- alone, with no intervening character is null.
 
 
 
