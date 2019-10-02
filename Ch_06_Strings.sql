@@ -193,6 +193,22 @@ insert into t1(id) values(1);
 --         the length of the word replaced the search symbol with nothing
 -- And repeate it that many times (t1)
 
+-- 04. Removing unwanted characters from a string.
+-- Problem: Remove all the voews and zeros
+
+select 
+  ename,
+  replace(
+  replace(
+  replace(
+  replace(
+  replace(ename, 'A', ''), 'E', ''), 'I', ''), 'O', ''), 'U', '') as stripped1,
+  sal,
+  replace(sal, 0, '') as stripped2
+from EMP;  
+
+-- Translate in other vendor are easier to use. SAS has compress.
+
 
 
 
