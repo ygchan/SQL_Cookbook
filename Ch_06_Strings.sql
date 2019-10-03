@@ -209,6 +209,22 @@ from EMP; 
 
 -- Translate in other vendor are easier to use. SAS has compress.
 
+-- 05. Separate numeric and character data
+-- This solution is not avaliable on MySQL.
+
+-- PostgreSQL solution
+select replace(
+  translate(data, '0123456789', '0000000000'), '0', ''
+  ) as name,
+  cast(
+  replace(
+  translate(lower(data), 'abcd..xyz')), rpad('z', 26, 'z')
+  as integer) as sal
+from (
+  select ename||sal as data
+  from emp
+) x
+
 
 
 
