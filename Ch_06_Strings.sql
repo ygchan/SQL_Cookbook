@@ -225,8 +225,8 @@ from (
   from emp
 ) x
 
-
-
-
+-- 07. Extracting Initials from a name
+-- Problem: You want to convert a full name into initials. Like this
+-- John Smith >> J.S.
 
 
