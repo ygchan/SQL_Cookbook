@@ -229,4 +229,9 @@ from (
 -- Problem: You want to convert a full name into initials. Like this
 -- John Smith >> J.S.
 
+select substr(substring_index(name, ' ', 1), 1, 1) as a,
+       substr(substring_index(name, ' ', 1), 1, 1) as b
+from (select 'John Smith' as name from t1) x
+
+-- Substring from index position of 1 and A (first letter), B (first letter).
 
