@@ -235,3 +235,9 @@ from (select 'John Smith' as name from t1) x
 
 -- Substring from index position of 1 and A (first letter), B (first letter).
 
+-- 08. Order by parts of a string
+select ename,
+from emp
+order by substr(ename, length(ename)-1, 2)
+
+-- Solution: Order by can use an expression (substr)
