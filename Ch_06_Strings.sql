@@ -241,3 +241,11 @@ from emp
 order by substr(ename, length(ename)-1, 2)
 
 -- Solution: Order by can use an expression (substr)
+
+-- 09. Order by a number in a string
+-- Problem: You have a number in a string in (unknown position) and wanted to order by it
+       
+select data
+from v
+order by cas(replace(translate(data, replace(translate(data, '0123456789', '##########'),
+                                             '#', ''), rpad('#', 20, '#')), '#', '') as integer);
