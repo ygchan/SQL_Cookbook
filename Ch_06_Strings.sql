@@ -249,3 +249,39 @@ select data
 from v
 order by cas(replace(translate(data, replace(translate(data, '0123456789', '##########'),
                                              '#', ''), rpad('#', 20, '#')), '#', '') as integer);
+
+-- 10. Creating a delimited list from table rows.
+-- You want to return table rows as values in a delimited list.
+-- Similiar to pivot into one column.
+
+-- MySQL has a very useful function
+select deptno,
+  group_concat(ename order by empno separator ',') as emps
+from emp
+group by deptno;
+
+/* Output:
++--------+--------------------------------------+
+| deptno | emps                                 |
++--------+--------------------------------------+
+|     10 | CLARK,KING,MILLER                    |
+|     20 | SMITH,JONES,SCOTT,ADAMS,FORD         |
+|     30 | ALLEN,WARD,MARTIN,BLAKE,TURNER,JAMES |
++--------+--------------------------------------+
+3 rows in set (0.02 sec)
+*/
+
+-- But I noticed if we are to use standard built-in function for creating
+-- a delimited list. You will need to know hoay many values will be in the list
+-- in advance. Then you can use standard transposition and concatenation.
+
+select a.deptno,
+  a.ename||',' as emps,
+  d.cnt,
+  (select count(*) from emp b
+   where a.deptno = b.deptno and b.empno <= a.empno) as pos
+from emp a,
+  (select deptno, count(ename) as cnt
+   from emp
+   group by deptno) d
+where d.deptno = a.deptno;
