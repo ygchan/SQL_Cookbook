@@ -275,6 +275,15 @@ group by deptno;
 -- a delimited list. You will need to know hoay many values will be in the list
 -- in advance. Then you can use standard transposition and concatenation.
 
+select deptno, 
+  rtrim(max(case when pos=1 then emps else '' end)||
+        max(case when pos=2 then emps else '' end)||
+        max(case when pos=3 then emps else '' end)||
+        max(case when pos=4 then emps else '' end)||
+        max(case when pos=5 then emps else '' end)||
+        max(case when pos=5 then emps else '' end), ','
+       ) as emp
+from (
 select a.deptno,
   a.ename||',' as emps,
   d.cnt,
@@ -284,7 +293,10 @@ from emp a,
   (select deptno, count(ename) as cnt
    from emp
    group by deptno) d
-where d.deptno = a.deptno;
+where d.deptno = a.deptno
+) x
+group by deptno
+order by 1;
 
 /* Output:
 +--------+------+-----+------+
