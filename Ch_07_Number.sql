@@ -37,3 +37,15 @@ group by deptno;
 +--------+-----------+
 3 rows in set (0.00 sec)
 */
+
+-- Discussion: It is important to note that the function avg ignores nulls
+create table t2(sal integer);
+insert into t2 values (10);
+insert into t2 values (20);
+insert into t2 values (null);
+
+select avg(sal) from t2;
+select distinct 30/2 from t2;
+
+-- they both equal to t2. So the take away point is: avg() function will 
+-- ignore null values and only consider 2 values in t2 sample table.
