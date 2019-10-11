@@ -53,3 +53,14 @@ select distinct 30/2 from t2;
 -- Author provided a tip to use coalesce function to handle this situation
 -- for example, if you want to count missing value into average.
 -- Then you would do avg(coalesec(sal, 0)).
+
+select avg(coalesce(sal, 0)) avg_sal from t2;
+
+/* Output:
++---------+
+| avg_sal |
++---------+
+| 10.0000 |
++---------+
+1 row in set (0.00 sec)
+*/
