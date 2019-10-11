@@ -64,3 +64,7 @@ select avg(coalesce(sal, 0)) avg_sal from t2;
 +---------+
 1 row in set (0.00 sec)
 */
+
+-- Finally, it is not a requirement to put deptno in your groupby.
+-- But it is a requirement (or strong recommendation) to NOT put columns in
+-- your select if they are not in groupby, calculations are excluded.
