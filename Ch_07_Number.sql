@@ -49,3 +49,7 @@ select distinct 30/2 from t2;
 
 -- they both equal to t2. So the take away point is: avg() function will 
 -- ignore null values and only consider 2 values in t2 sample table.
+
+-- Author provided a tip to use coalesce function to handle this situation
+-- for example, if you want to count missing value into average.
+-- Then you would do avg(coalesec(sal, 0)).
