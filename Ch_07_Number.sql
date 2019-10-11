@@ -68,3 +68,7 @@ select avg(coalesce(sal, 0)) avg_sal from t2;
 -- Finally, it is not a requirement to put deptno in your groupby.
 -- But it is a requirement (or strong recommendation) to NOT put columns in
 -- your select if they are not in groupby, calculations are excluded.
+
+-- 02. Finding the min/max value in a column
+-- Please find the highest and lowest values in a given column. Such as 
+-- highest and lowest salary for all employees.
