@@ -151,3 +151,8 @@ group by deptno;
 select sum(sal)
 from emp;
 
+-- If you need to sum by department, simply use groupby deptno.
+
+select deptno, sum(sal) as total_for_dept
+from emp
+group by deptno;
