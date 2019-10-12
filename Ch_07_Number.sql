@@ -72,3 +72,34 @@ select avg(coalesce(sal, 0)) avg_sal from t2;
 -- 02. Finding the min/max value in a column
 -- Please find the highest and lowest values in a given column. Such as 
 -- highest and lowest salary for all employees.
+
+-- Solution: Simply use the min() and max() function respectively
+select min(sal) as min_sal, max(sal) as max_sal
+from emp;
+
+/* Output:
++---------+---------+
+| min_sal | max_sal |
++---------+---------+
+|     950 |    5000 |
++---------+---------+
+1 row in set (0.06 sec)
+*/
+
+-- When you want to get min and max for each department. You can use the 
+-- groupby clause.
+
+select deptno, min(sal) as min_sal, max(sal) as max_sal
+from emp
+group by deptno;
+
+/* Output:
++--------+---------+---------+
+| deptno | min_sal | max_sal |
++--------+---------+---------+
+|     10 |    1300 |    5000 |
+|     20 |     960 |    3600 |
+|     30 |     950 |    2850 |
++--------+---------+---------+
+3 rows in set (0.01 sec)
+*/
