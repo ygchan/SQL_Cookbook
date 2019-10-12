@@ -321,4 +321,9 @@ order by 1;
 */
 
 -- 11. Converting a delimited data into multi-valued in-list
+-- You have a empno list 5000,5001,5002,5003 and want to use in the where
+-- clause. But it doesn't work because it can only be passed in a string.
+
+-- where empno in ('5000,5001,5002,5003');
+-- Please treat the comma-delmited list as numeric values.
 
