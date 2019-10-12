@@ -103,3 +103,44 @@ group by deptno;
 +--------+---------+---------+
 3 rows in set (0.01 sec)
 */
+
+-- Also as a reminder, the min/max ignores null value. If you have a min/max
+-- that from a table with null values. Please replace the null with 0 first.
+-- Otherwise it will returns a null as the min value.
+
+select deptno, comm
+from emp
+where deptno in (10, 30)
+order by 1;
+
+/* Output:
++--------+------+
+| deptno | comm |
++--------+------+
+|     10 | NULL |
+|     10 | NULL |
+|     10 | NULL |
+|     30 |  300 |
+|     30 |  500 |
+|     30 | 1400 |
+|     30 | NULL |
+|     30 |    0 |
+|     30 | NULL |
++--------+------+
+9 rows in set (0.01 sec)
+*/
+
+select deptno, min(comm), max(comm)
+from emp
+group by deptno;
+
+/* Ouput:
++--------+-----------+-----------+
+| deptno | min(comm) | max(comm) |
++--------+-----------+-----------+
+|     10 |      NULL |      NULL |
+|     20 |      NULL |      NULL |
+|     30 |         0 |      1400 |
++--------+-----------+-----------+
+3 rows in set (0.00 sec)
+*/
