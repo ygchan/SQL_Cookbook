@@ -144,3 +144,10 @@ group by deptno;
 +--------+-----------+-----------+
 3 rows in set (0.00 sec)
 */
+
+-- 03. Summing the values in a column
+-- Please compute the sum of all values, such as all employee salaries.
+
+select sum(sal)
+from emp;
+
