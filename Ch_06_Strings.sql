@@ -327,3 +327,24 @@ order by 1;
 -- where empno in ('5000,5001,5002,5003');
 -- Please treat the comma-delmited list as numeric values.
 
+select substring_index(list.vals, ',', iter.pos) as empno
+from (select id pos from t10) as iter,
+     (select '7654,7698,7782,7788' as vals from t1) list;
+
+/* Output:
++---------------------+
+| empno               |
++---------------------+
+| 7654                |
+| 7654,7698           |
+| 7654,7698,7782      |
+| 7654,7698,7782,7788 |
+| 7654,7698,7782,7788 |
+| 7654,7698,7782,7788 |
+| 7654,7698,7782,7788 |
+| 7654,7698,7782,7788 |
+| 7654,7698,7782,7788 |
+| 7654,7698,7782,7788 |
++---------------------+
+10 rows in set (0.02 sec)
+*/
