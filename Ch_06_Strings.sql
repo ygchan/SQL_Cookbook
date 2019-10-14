@@ -329,7 +329,8 @@ order by 1;
 
 select substring_index(list.vals, ',', iter.pos) as empno
 from (select id pos from t10) as iter,
-     (select '7654,7698,7782,7788' as vals from t1) list;
+     (select '7654,7698,7782,7788' as vals from t1) list
+where iter.pos <= (length(list.vals)-length(replace(list.vals, ',', ''))) + 1;
 
 /* Output:
 +---------------------+
