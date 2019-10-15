@@ -330,6 +330,7 @@ order by 1;
 select substring_index(list.vals, ',', iter.pos) as empno
 from (select id pos from t10) as iter,
      (select '7654,7698,7782,7788' as vals from t1) list
+/* Adding the where iter.pos <= filter, removed the excess rows */
 where iter.pos <= (length(list.vals)-length(replace(list.vals, ',', ''))) + 1;
 
 /* Output:
@@ -349,3 +350,28 @@ where iter.pos <= (length(list.vals)-length(replace(list.vals, ',', ''))) + 1;
 +---------------------+
 10 rows in set (0.02 sec)
 */
+
+/* Output:
++---------------------+
+| empno               |
++---------------------+
+| 7654                |
+| 7654,7698           |
+| 7654,7698,7782      |
+| 7654,7698,7782,7788 |
++---------------------+
+4 rows in set (0.02 sec)
+*/
+
+-- Discussion: This is extremely interesting (smart).
+-- The author wanted to count how many commas was there
+-- Step 1: Find out how many characters are there in total: select substring_index(list.vals, ',', iter.pos) as empno,
+--         length(list.vals)
+-- Step 2: Find out the length removed comma
+--         length(replace(list.vals, ',', ''))
+-- Step 3: Subtract 2 from 1, but ADD 1 for the fact that there is no comma at the end.
+-- Step 4: Put them together
+--         (length(list.vals) - length(replace(list.vals, ',', ''))) + 1
+-- Because of the amount of (), it is difficult to read, but really smart!
+
+
