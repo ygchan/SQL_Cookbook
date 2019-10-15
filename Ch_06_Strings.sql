@@ -374,4 +374,23 @@ where iter.pos <= (length(list.vals)-length(replace(list.vals, ',', ''))) + 1;
 --         (length(list.vals) - length(replace(list.vals, ',', ''))) + 1
 -- Because of the amount of (), it is difficult to read, but really smart!
 
+select substring_index(
+  substring_index(list.vals, ',', iter.pos), ',', -1) as empno
+from (select id pos from t10) as iter,
+     (select '7654,7698,7782,7788' as vals from t1) list
+/* Adding the where iter.pos <= filter, removed the excess rows */
+where iter.pos <= (length(list.vals)-length(replace(list.vals, ',', ''))) + 1;
 
+/* iter position is 1, 2, 3, 4, 5 ... etc */
+/* What does arugment -1 do? */
+/* Output:
++-------+
+| empno |
++-------+
+| 7654  |
+| 7698  |
+| 7782  |
+| 7788  |
++-------+
+4 rows in set (0.00 sec)
+*/
