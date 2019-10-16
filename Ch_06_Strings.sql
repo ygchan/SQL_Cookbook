@@ -394,3 +394,29 @@ where iter.pos <= (length(list.vals)-length(replace(list.vals, ',', ''))) + 1;
 +-------+
 4 rows in set (0.00 sec)
 */
+
+/* https://www.w3schools.com/sql/func_mysql_substring_index.asp */
+
+select empno, ename, sal, deptno
+from emp
+where empno in
+(
+select substring_index(
+  substring_index(list.vals, ',', iter.pos), ',', -1) as empno
+from (select id pos from t10) as iter,
+     (select '7654,7698,7782,7788' as vals from t1) list
+/* Adding the where iter.pos <= filter, removed the excess rows */
+where iter.pos <= (length(list.vals)-length(replace(list.vals, ',', ''))) + 1
+);
+
+/* Output:
++-------+--------+------+--------+
+| empno | ename  | sal  | deptno |
++-------+--------+------+--------+
+|  7654 | MARTIN | 1250 |     30 |
+|  7698 | BLAKE  | 2850 |     30 |
+|  7782 | CLARK  | 2450 |     10 |
+|  7788 | SCOTT  | 3600 |     20 |
++-------+--------+------+--------+
+4 rows in set (0.03 sec)
+*/
