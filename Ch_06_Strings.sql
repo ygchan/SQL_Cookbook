@@ -420,3 +420,8 @@ where iter.pos <= (length(list.vals)-length(replace(list.vals, ',', ''))) + 1
 +-------+--------+------+--------+
 4 rows in set (0.03 sec)
 */
+
+-- 12. Alphabetizing a string
+-- Write a SQL query to alphabetize the individual characters within the 
+-- string within your tables.
+
