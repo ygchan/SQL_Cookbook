@@ -156,3 +156,14 @@ from emp;
 select deptno, sum(sal) as total_for_dept
 from emp
 group by deptno;
+                    
+-- 04. Counting rows in a Table
+-- Please write a SQL query to count the number of rows in a table
+
+select count(*)
+from emp;
+
+-- Or counting by department number
+select deptno, count(*) as count_num
+from emp
+group by deptno;
