@@ -167,3 +167,14 @@ from emp;
 select deptno, count(*) as count_num
 from emp
 group by deptno;
+
+-- 05. Counting Values in a Column
+-- Please count the number of non-Null values in a columns
+
+select count(comm)
+from emp;
+
+-- When you count star, you are counting rows (regardless of values).
+-- Count(*) returns number of rows cotaining null and non-null values.
+-- But when you count (column), you are counting how many rows that are NOT nulls.  
+          
