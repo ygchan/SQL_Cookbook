@@ -178,3 +178,19 @@ from emp;
 -- Count(*) returns number of rows cotaining null and non-null values.
 -- But when you count (column), you are counting how many rows that are NOT nulls.  
           
+-- 06. Generating a running total
+-- Please write a SQL query to calculate the running total
+
+select e.ename, e.sal,
+   (select sum(d.sal) from emp d
+    where d.empno <= e.empno) as running_total
+from emp e
+order by 3;
+
+-- The solution requires you to use the scalar subquery to compute a running total.
+-- Please note this only works if each of the emp is distinctive.
+-- Because less than or equal join condition will otherwise duplicates. 
+
+-- Scalar subquery: joining one column and returning one row.
+-- This has been reviewed multiple times.
+-- https://docs.actian.com/actianx/11.1/index.html#page/SQLRef/Scalar_Subqueries.htm
