@@ -187,6 +187,28 @@ select e.ename, e.sal,
 from emp e
 order by 3;
 
+/* Output: 
++--------+------+---------------+
+| ename  | sal  | running_total |
++--------+------+---------------+
+| SMITH  |  960 |           960 |
+| ALLEN  | 1600 |          2560 |
+| WARD   | 1250 |          3810 |
+| JONES  | 3570 |          7380 |
+| MARTIN | 1250 |          8630 |
+| BLAKE  | 2850 |         11480 |
+| CLARK  | 2450 |         13930 |
+| SCOTT  | 3600 |         17530 |
+| KING   | 5000 |         22530 |
+| TURNER | 1500 |         24030 |
+| ADAMS  | 1320 |         25350 |
+| JAMES  |  950 |         26300 |
+| FORD   | 3600 |         29900 |
+| MILLER | 1300 |         31200 |
++--------+------+---------------+
+14 rows in set (0.01 sec)
+*/
+
 -- The solution requires you to use the scalar subquery to compute a running total.
 -- Please note this only works if each of the emp is distinctive.
 -- Because less than or equal join condition will otherwise duplicates. 
