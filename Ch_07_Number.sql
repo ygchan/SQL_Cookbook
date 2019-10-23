@@ -216,3 +216,31 @@ order by 3;
 -- Scalar subquery: joining one column and returning one row.
 -- This has been reviewed multiple times.
 -- https://docs.actian.com/actianx/11.1/index.html#page/SQLRef/Scalar_Subqueries.htm
+
+-- 07. Generating a Running Product
+-- Compute a running product on a numeric column.
+
+select e.ename, e.sal,
+   (select round(exp(sum(ln(d.sal)))) from emp d
+    where d.empno <= e.empno
+      and e.deptno = d.deptno) as running_product
+from emp e
+where e.deptno = 10;
+
+/* Output:
++--------+------+-----------------+
+| ename  | sal  | running_product |
++--------+------+-----------------+
+| CLARK  | 2450 |            2450 |
+| KING   | 5000 |        12250000 |
+| MILLER | 1300 |     15925000000 |
++--------+------+-----------------+
+3 rows in set (0.01 sec)
+*/
+
+-- Discussion: exp() - base of natural logarithm number
+--             sum() - calculate the total value
+--              ln() - natural logarithm
+
+-- To calculate the running product in MySQL,
+-- Please sum the natural logarithm, and then take the base of ln.
