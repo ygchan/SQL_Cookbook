@@ -290,4 +290,52 @@ where a.deptno = 10;
 -- Mode is the element that appears most frequently for a given set of data.
 -- Please find the mode of the salaries in the deptno 20.
 
+select sal
+from emp
+where deptno = 20
+order by sal;
 
+/* Output:
++------+
+| sal  |
++------+
+|  960 |
+| 1320 |
+| 3570 |
+| 3600 |
+| 3600 |
++------+
+5 rows in set (0.00 sec)
+*/
+
+-- The output of mode should be $3600.
+
+-- George's attempt, what if there are two modes...
+-- This probably do not work well.
+select sal, count(*) as count
+from emp
+where deptno = 20
+group by sal
+order by count(*) desc
+limit 1;
+
+-- Book's answer
+select sal
+from emp
+where deptno = 20
+group by sal
+having count(*) >= all (
+select count(*) as count
+from emp
+where deptno = 20
+group by sal
+);
+
+/* Output: 
++------+
+| sal  |
++------+
+| 3600 |
++------+
+1 row in set (0.00 sec)
+*/
