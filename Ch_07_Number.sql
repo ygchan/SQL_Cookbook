@@ -279,3 +279,9 @@ where a.deptno = 10;
 +-------+--------+------+--------+
 14 rows in set (0.01 sec)
 */
+
+-- Discussion: The main difference is sum vs. sum of difference,
+-- you would return the values as negative with the exception of the first.
+
+-- case if min(b.empno) << this is the first value then sum(b.sal)
+-- else sum(-b.sal). I did not know you can multiple negative by adding just -.
