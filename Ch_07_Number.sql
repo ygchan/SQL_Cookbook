@@ -349,3 +349,17 @@ group by sal
 
 -- 10. Calculating a Median.
 -- Median is the value of the middle number for a set of ordered elements.
+
+-- Solution: Use a self-join.
+select avg(sal)
+from (
+select e.sal
+from emp e, emp d
+where e.deptno = d.deptno
+   and e.deptno = 20
+group by e.sal
+having sum(case when e.sal = d.sal then 1 else 0 end)
+   >= abs(sum(sign(e.sal - d.sal)))
+);
+
+)
