@@ -339,3 +339,13 @@ group by sal
 +------+
 1 row in set (0.00 sec)
 */
+
+-- Discussion: The subquery returns the number of times each sal
+-- occurs. The outer query returns any sal that a number generates
+-- greater than or equal to all. In other words, it returns the most
+-- common salary count for department number 20.
+
+-- Note in DB2 and SQL server: dense_Rank()over(order by ctn desc) as rank.
+
+-- 10. Calculating a Median.
+-- Median is the value of the middle number for a set of ordered elements.
