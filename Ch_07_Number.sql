@@ -285,3 +285,9 @@ where a.deptno = 10;
 
 -- case if min(b.empno) << this is the first value then sum(b.sal)
 -- else sum(-b.sal). I did not know you can multiple negative by adding just -.
+
+-- 09. Calculating a Mode.
+-- Mode is the element that appears most frequently for a given set of data.
+-- Please find the mode of the salaries in the deptno 20.
+
+
