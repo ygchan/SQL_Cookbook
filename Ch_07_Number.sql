@@ -244,3 +244,38 @@ where e.deptno = 10;
 
 -- To calculate the running product in MySQL,
 -- Please sum the natural logarithm, and then take the base of ln.
+
+-- 08. Calculate a running difference
+-- Compute a running difference on values in a numeric column.
+
+select a.empno, a.ename, a.sal,
+   (select case when a.empno = min(b.empno) then sum(b.sal)
+                else sum(-b.sal) 
+         end
+    from emp b
+    where b.empno <= a.empno
+      and b.deptno = a.deptno) as rnk
+from emp a
+where a.deptno = 10;
+
+/* Output:
++-------+--------+------+--------+
+| empno | ename  | sal  | rnk    |
++-------+--------+------+--------+
+|  7369 | SMITH  |  960 |    960 |
+|  7499 | ALLEN  | 1600 |   1600 |
+|  7521 | WARD   | 1250 |  -2850 |
+|  7566 | JONES  | 3570 |  -4530 |
+|  7654 | MARTIN | 1250 |  -4100 |
+|  7698 | BLAKE  | 2850 |  -6950 |
+|  7782 | CLARK  | 2450 |   2450 |
+|  7788 | SCOTT  | 3600 |  -8130 |
+|  7839 | KING   | 5000 |  -7450 |
+|  7844 | TURNER | 1500 |  -8450 |
+|  7876 | ADAMS  | 1320 |  -9450 |
+|  7900 | JAMES  |  950 |  -9400 |
+|  7902 | FORD   | 3600 | -13050 |
+|  7934 | MILLER | 1300 |  -8750 |
++-------+--------+------+--------+
+14 rows in set (0.01 sec)
+*/
