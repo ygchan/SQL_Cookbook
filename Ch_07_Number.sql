@@ -362,4 +362,9 @@ having sum(case when e.sal = d.sal then 1 else 0 end)
    >= abs(sum(sign(e.sal - d.sal)))
 );
 
-)
+-- 11. Determining the percentage of a Total
+-- Please find the percentage of salary from department 10  
+select (sum(
+         case when deptno = 10 then sal end)/sum(sal)
+        )*100 as pct
+from emp;
