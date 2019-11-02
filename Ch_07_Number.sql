@@ -368,3 +368,54 @@ select (sum(
          case when deptno = 10 then sal end)/sum(sal)
         )*100 as pct
 from emp;
+
+-- 12. Aggregating Nullable Columns
+-- Aggregation on a column that can be null, but you want the average
+-- or summary function account these null. The solution is to substitute 
+-- them with zero value if they are null.
+
+select avg(coalesce(comm, 0)) as avg_comm
+from emp
+where deptno = 30;
+
+/* Output:
++----------+
+| avg_comm |
++----------+
+| 366.6667 |
++----------+
+1 row in set (0.01 sec)
+*/
+
+-- Without it, your answer will be wrong.
+select avg(comm) as avg_comm_wrong
+from emp
+where deptno = 30;
+
+/* Output:
++----------------+
+| avg_comm_wrong |
++----------------+
+|       550.0000 |
++----------------+
+1 row in set (0.00 sec)
+*/
+
+select coalesce(comm, 0) as comm_sub,
+  comm as comm_orig
+from emp
+where deptno = 30;
+
+/* Output:
++----------+-----------+
+| comm_sub | comm_orig |
++----------+-----------+
+|      300 |       300 |
+|      500 |       500 |
+|     1400 |      1400 |
+|        0 |      NULL |
+|        0 |         0 |
+|        0 |      NULL |
++----------+-----------+
+6 rows in set (0.00 sec)
+*/
