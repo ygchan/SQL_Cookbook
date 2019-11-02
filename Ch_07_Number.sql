@@ -419,3 +419,38 @@ where deptno = 30;
 +----------+-----------+
 6 rows in set (0.00 sec)
 */
+
+-- 13. Computing Average without high and low values
+-- Compute the average but exclude the highest and lowest value (in order)
+-- to hopefully reduce the effect of skew.
+
+select avg(sal)
+from emp
+where sal not in (
+  (select min(sal) from emp),
+  (select max(sal) from emp)
+)
+
+/* Output:
++-----------+
+| avg(sal)  |
++-----------+
+| 2104.1667 |
++-----------+
+1 row in set (0.01 sec)
+*/
+
+-- This solution is removing all occurence of top and lowest salary in the
+-- table. But not (one) instances of them.
+
+select (sum(sal)-min(sal)-max(sal))/(count(*)-2) as avg
+from emp;
+
+/* Output:
++-----------+
+| avg       |
++-----------+
+| 2104.1667 |
++-----------+
+1 row in set (0.00 sec)
+*/
