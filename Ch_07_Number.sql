@@ -454,3 +454,14 @@ from emp;
 +-----------+
 1 row in set (0.00 sec)
 */
+
+-- 14. Converting Alpha string to numbers
+-- Have a string with both alpha and number, but you want only the number portion.
+-- Example: "ABC123" or "123AB" to 123
+
+-- PostgreSQL only solution. 
+select cast(
+  replace(
+  translate('ABC123', 'QWERTYUIOPASDFGHJKLZXCVBNM',
+            rpad('#', 26, '#')), '#', '') as integer) as num
+from t1;
