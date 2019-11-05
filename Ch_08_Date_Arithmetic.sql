@@ -63,3 +63,29 @@ where deptno = 10;
 
 -- To add/subtract a day/month/year to a date
 -- (the variable) -/+ interval (number) (string) as new_column
+
+-- 02. Determining the number of days between two dates
+-- Calculate the difference betweeen two dates and represent the result in days
+
+-- hd stands for hire date
+select datediff(allen_hd, ward_hd) as difference_in_day
+from 
+(
+select hiredate as ward_hd
+from emp
+where ename = 'WARD'
+) x,
+(
+select hiredate as allen_hd
+from emp
+where ename = 'ALLEN'
+) y;
+
+/* Output:
++-------------------+
+| difference_in_day |
++-------------------+
+|                -2 |
++-------------------+
+1 row in set (0.00 sec)
+*/
