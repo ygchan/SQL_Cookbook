@@ -60,3 +60,6 @@ where deptno = 10;
 +--------+------------+-------------+------------+-------------+------------+-------------+------------+
 3 rows in set (0.00 sec)
 */
+
+-- To add/subtract a day/month/year to a date
+-- (the variable) -/+ interval (number) (string) as new_column
