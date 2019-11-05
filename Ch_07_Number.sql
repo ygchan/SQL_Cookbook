@@ -1,6 +1,10 @@
 -- SQL Cookbook
 -- http://shop.oreilly.com/product/9780596009762.do
 
+-- Configurate MySQL Database
+-- export PATH=$PATH:/usr/local/mysql/bin
+-- mysql -u Study -p bank
+
 -- Common operations with numbers, such as numeric computations.
 -- Think about use of aggregate functions and the group by clause.
 
@@ -470,12 +474,54 @@ from t1;
 -- Problem: Modify the values in a running total depending on the values in another
 -- column. Maybe PR = Purchase and PY = Payment.
 
+-- View v was created, please drop it before creating it again.
+
+create view v (id,amt,trx)
+as
+select 1, 100, 'PR' from t1 union all
+select 2, 100, 'PR' from t1 union all
+select 3, 50,  'PY' from t1 union all
+select 4, 200, 'PR' from t1 union all
+select 5, 200, 'PY' from t1 union all
+select 6, 50,  'PY' from t1;
+
+select * from V;
+
+/* Output:
+mysql> select * from V;
++----+-----+-----+
+| id | amt | trx |
++----+-----+-----+
+|  1 | 100 | PR  |
+|  2 | 100 | PR  |
+|  3 |  50 | PY  |
+|  4 | 200 | PR  |
+|  5 | 200 | PY  |
+|  6 |  50 | PY  |
++----+-----+-----+
+6 rows in set (0.01 sec)
+*/
+
 select case when v1.trx = 'PY'
        then 'PAYMENT'
        else 'PURCHASE'
        end as trx_type,
        v1.amt,
-       (select sum( case when v2.tx = 'PY' THEN -v2.amt else v2.amt end)
+       (select sum( case when v2.trx = 'PY' THEN -v2.amt else v2.amt end)
         from v v2
         where v2.id <= v1.id) as balance
 from v v1;
+
+/* Output:
++----------+-----+---------+
+| trx_type | amt | balance |
++----------+-----+---------+
+| PURCHASE | 100 |     100 |
+| PURCHASE | 100 |     200 |
+| PAYMENT  |  50 |     150 |
+| PURCHASE | 200 |     350 |
+| PAYMENT  | 200 |     150 |
+| PAYMENT  |  50 |     100 |
++----------+-----+---------+
+6 rows in set (0.01 sec)
+*/
