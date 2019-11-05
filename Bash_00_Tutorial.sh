@@ -18,3 +18,13 @@ echo "The price of an Apple is: \$HK $price_per_apple"
 # to preserve the spaces
 greeting='Hello        world!'
 echo $greeting" now with spaces : $greeting"
+
+# Review and Question Chapter 01:
+# https://www.learnshell.org/en/Variables
+# -- How to print hello world in Bash?
+# -- How to Create a variable string?
+# -- How to use an variable in print?
+# -- How to have a command in the variable?
+# -- How to escape special character?
+# -- How to preserve white spaces in string variable?
+# -- How to convert date (What is the command)?
