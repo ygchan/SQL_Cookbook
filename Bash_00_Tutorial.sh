@@ -19,6 +19,14 @@ echo "The price of an Apple is: \$HK $price_per_apple"
 greeting='Hello        world!'
 echo $greeting" now with spaces : $greeting"
 
+# Programming problem:
+# Create a birthdate variable, Create an age variable
+# Convert your birthdate into 01 JAN 2019 format using date command.
+# BIRTHDATE="Jan 1, 2000"
+# Presents=10
+# BIRTHDAY=`date -d "$BIRTHDATE" +%A`
+# echo "$BIRTHDAY"
+
 # Review and Question Chapter 01:
 # https://www.learnshell.org/en/Variables
 # -- How to print hello world in Bash?
