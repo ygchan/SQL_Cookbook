@@ -465,3 +465,17 @@ select cast(
   translate('ABC123', 'QWERTYUIOPASDFGHJKLZXCVBNM',
             rpad('#', 26, '#')), '#', '') as integer) as num
 from t1;
+
+-- 15. Changing values in a running total
+-- Problem: Modify the values in a running total depending on the values in another
+-- column. Maybe PR = Purchase and PY = Payment.
+
+select case when v1.trx = 'PY'
+       then 'PAYMENT'
+       else 'PURCHASE'
+       end as trx_type,
+       v1.amt,
+       (select sum( case when v2.tx = 'PY' THEN -v2.amt else v2.amt end)
+        from v v2
+        where v2.id <= v1.id) as balance
+from v v1;
