@@ -89,3 +89,30 @@ where ename = 'ALLEN'
 +-------------------+
 1 row in set (0.00 sec)
 */
+
+-- Inline solution to get the two hiring dates together
+select ward_hd, allen_hd
+from 
+(
+select hiredate as ward_hd
+from emp
+where ename = 'WARD'
+) x,
+(
+select hiredate as allen_hd
+from emp
+where ename = 'ALLEN'
+) y;
+
+/* Output:
++------------+------------+
+| ward_hd    | allen_hd   |
++------------+------------+
+| 1981-02-22 | 1981-02-20 |
++------------+------------+
+1 row in set (0.00 sec)
+*/
+
+-- Cartesian product is created, because there are no join specified.
+-- To get the difference in days, simply subtract one from the two values
+-- returned and using the method (function) appropriate for your database.
