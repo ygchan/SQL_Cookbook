@@ -36,3 +36,20 @@ echo $greeting" now with spaces : $greeting"
 # -- How to escape special character?
 # -- How to preserve white spaces in string variable?
 # -- How to convert date (What is the command)?
+
+# Passing Arugment to the Bash Script
+# ./bin/my_shopping.sh apple 5 banana 8 "Fruit Basket" 15
+# $0 = the script itself
+# $1 = apple
+# $2 = 5
+# $3 = banana
+
+# Print the word banana (4th parameter, 0th is the script)
+echo $3
+
+# Assign to a variable
+Lunch=$3
+
+# Using an variable in a print statement
+echo "A $Lunch costs just $6" 
+# Result: A banana costs just $15 
