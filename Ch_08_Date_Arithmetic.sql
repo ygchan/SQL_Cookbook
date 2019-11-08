@@ -116,3 +116,17 @@ where ename = 'ALLEN'
 -- Cartesian product is created, because there are no join specified.
 -- To get the difference in days, simply subtract one from the two values
 -- returned and using the method (function) appropriate for your database.
+
+-- 03. Determining the number of business days between two days
+-- Given two dates, find how many days that are not (Saturday, Sunday).
+
+
+
+
+
+
+
+
+
+
+
