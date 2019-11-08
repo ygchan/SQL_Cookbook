@@ -672,7 +672,12 @@ where t500.id <= datediff(blake_hd, jones_hd) + 1;
 1 row in set (0.01 sec)
 */
 
+-- 04. Determining the number of months or years between the 2 dates
+-- Find the difference between two dates in terms of either month/year
 
+-- I think this rounding issue might be why Linkedin has a funny way
+-- of calculating how long you have been working in a company.
+-- Round up, or Round down?
 
 
 
