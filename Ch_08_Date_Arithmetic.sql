@@ -679,5 +679,50 @@ where t500.id <= datediff(blake_hd, jones_hd) + 1;
 -- of calculating how long you have been working in a company.
 -- Round up, or Round down?
 
+-- Getting the min and max
+select min(hiredate) as min_hd, max(hiredate) as max_hd
+from emp;
 
+/* Output:
++------------+------------+
+| min_hd     | max_hd     |
++------------+------------+
+| 1980-12-17 | 1983-01-12 |
++------------+------------+
+1 row in set (0.00 sec)
+*/
 
+select (year(max_hd) - year(min_hd)) * 12 +
+       (month(max_hd) - month(min_hd)) as mnth
+from (
+select min(hiredate) as min_hd, max(hiredate) as max_hd
+from emp
+) x;
+
+/* Output:
++------+
+| mnth |
++------+
+|   25 |
++------+
+1 row in set (0.00 sec)
+*/
+
+select mnth, mnth/12
+from (
+   select (year(max_hd) - year(min_hd)) * 12 +
+          (month(max_hd) - month(min_hd)) as mnth
+   from (
+   select min(hiredate) as min_hd, max(hiredate) as max_hd
+   from emp
+   ) x
+) y;
+
+/* Output:
++------+---------+
+| mnth | mnth/12 |
++------+---------+
+|   25 |  2.0833 |
++------+---------+
+1 row in set (0.01 sec)
+*/
