@@ -770,3 +770,29 @@ from emp
 +------+------+--------+
 1 row in set (0.00 sec)
 */
+
+-- What about if you want to do abs()? Will that give the same
+-- result or not? YES! It does!!
+
+select abs(datediff(allen_hd, ward_hd)) * 24 hr,
+       abs(datediff(allen_hd, ward_hd)) * 24 * 60 min,
+       abs(datediff(allen_hd, ward_hd)) * 24 * 60 * 60 sec
+from (
+select max(case when ename = 'WARD'
+                then hiredate
+           end) as ward_hd,
+       max(case when ename = 'ALLEN'
+                then hiredate
+           end) as allen_hd
+from emp
+) x;
+
+/* Output:
++------+------+--------+
+| hr   | min  | sec    |
++------+------+--------+
+|   48 | 2880 | 172800 |
++------+------+--------+
+1 row in set (0.00 sec)
+*/
+
