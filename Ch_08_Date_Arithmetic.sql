@@ -796,3 +796,21 @@ from emp
 1 row in set (0.00 sec)
 */
 
+-- 06. Counting the occurrences of weekdays in a year 
+-- Give a particular year, find out how many weekdays occured.
+
+-- Step #01. Generate all the possible dates
+-- Step #02. Format the dates such that they resolve to the name (Monday)
+-- Step #03. Count the occurence of each weekday name
+
+select concat(year(current_date), '-01-01')
+from t1;
+
+/* Output:
++--------------------------------------+
+| concat(year(current_date), '-01-01') |
++--------------------------------------+
+| 2019-01-01                           |
++--------------------------------------+
+1 row in set (0.02 sec)
+*/
