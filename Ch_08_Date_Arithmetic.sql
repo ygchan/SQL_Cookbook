@@ -841,3 +841,38 @@ from t10;
 +-----------+
 10 rows in set (0.01 sec)
 */
+
+select date_format(
+          date_add(
+              cast(concat(year(current_date), '-01-01') as date),
+                   interval t500.id-1 day),
+                   '%W') day,
+       count(*)
+from t500
+where t500.id <= datediff(
+                     cast(
+                   concat(year(current_date)+1, '-01-01')
+                          as date),
+                     cast(
+                   concat(year(current_date), '-01-01')
+                          as date))
+group by date_format(
+            date_add(
+                cast(concat(year(current_date), '-01-01') as date),
+                     interval t500.id-1 day),
+                     '%W');
+
+/* Output:
++-----------+----------+
+| day       | count(*) |
++-----------+----------+
+| Friday    |       52 |
+| Monday    |       52 |
+| Saturday  |       52 |
+| Sunday    |       52 |
+| Thursday  |       52 |
+| Tuesday   |       53 |
+| Wednesday |       52 |
++-----------+----------+
+7 rows in set (0.02 sec)
+*/
