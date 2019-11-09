@@ -815,25 +815,29 @@ from t1;
 1 row in set (0.02 sec)
 */
 
-select date_add(
-           cast(concat(year(current_date), '-01-01') as date),
-                interval t10.id-1 day) day
+-- Remember it is date_format(), not format()
+-- Reference: https://www.w3schools.com/sql/func_mysql_date_format.asp
+select date_format(
+          date_add(
+              cast(concat(year(current_date), '-01-01') as date),
+                   interval t10.id-1 day),
+                   '%W') day
 from t10;
 
 /* Output:
-+------------+
-| day        |
-+------------+
-| 2019-01-01 |
-| 2019-01-02 |
-| 2019-01-03 |
-| 2019-01-04 |
-| 2019-01-05 |
-| 2019-01-06 |
-| 2019-01-07 |
-| 2019-01-08 |
-| 2019-01-09 |
-| 2019-01-10 |
-+------------+
-10 rows in set (0.00 sec)
++-----------+
+| day       |
++-----------+
+| Tuesday   |
+| Wednesday |
+| Thursday  |
+| Friday    |
+| Saturday  |
+| Sunday    |
+| Monday    |
+| Tuesday   |
+| Wednesday |
+| Thursday  |
++-----------+
+10 rows in set (0.01 sec)
 */
