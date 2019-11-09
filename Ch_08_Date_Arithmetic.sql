@@ -726,3 +726,47 @@ from (
 +------+---------+
 1 row in set (0.01 sec)
 */
+
+-- 05. Determining the number of seconds, minutes of hours between 2 dates
+
+select max(case when ename = 'WARD'
+                then hiredate
+           end) as ward_hd,
+       max(case when ename = 'ALLEN'
+                then hiredate
+           end) as allen_hd
+from emp;
+
+/* Output: 
++------------+------------+
+| ward_hd    | allen_hd   |
++------------+------------+
+| 1981-02-22 | 1981-02-20 |
++------------+------------+
+1 row in set (0.01 sec)
+*/
+
+select datediff(ward_hd, allen_hd) * 24 hr,
+       datediff(ward_hd, allen_hd) * 24 * 60 min,
+       datediff(ward_hd, allen_hd) * 24 * 60 * 60 sec
+from (
+select max(case when ename = 'WARD'
+                then hiredate
+           end) as ward_hd,
+       max(case when ename = 'ALLEN'
+                then hiredate
+           end) as allen_hd
+from emp
+) x;
+
+-- In MySQL, unlike SQL Server, you only uses 2 arugment.
+-- Please put the "later, or larger date" first.
+
+/* Output:
++------+------+--------+
+| hr   | min  | sec    |
++------+------+--------+
+|   48 | 2880 | 172800 |
++------+------+--------+
+1 row in set (0.00 sec)
+*/
