@@ -876,3 +876,36 @@ group by date_format(
 +-----------+----------+
 7 rows in set (0.02 sec)
 */
+
+-- 07. Determining the date difference between the current record
+-- and the next. (Specifically dates stored in two different row.)
+-- For example, you want to find out the number of days between the 
+-- date they were hired and the date the next employee was hired.
+
+-- Hint: Find the earliest hiredate after the current emlpyee was hired.
+-- You will need to use scalar subquery to find the next hiredate.
+
+select x.*, datediff(next_hd, hiredate) as diff
+from (
+select e.deptno, e.ename, e.hiredate,
+       /* Very clever use of scalar subquery! */
+       /* What is the smallest hiredate that is greater (after)
+          your this current hiredate (at this row) */
+       (select min(d.hiredate) from emp d
+        where d.hiredate > e.hiredate) next_hd
+from emp e
+where e.deptno = 10
+) x;
+
+/* Output:
++--------+--------+------------+------------+
+| deptno | ename  | hiredate   | next_hd    |
++--------+--------+------------+------------+
+|     10 | CLARK  | 1981-06-09 | 1981-09-08 |
+|     10 | KING   | 1981-11-17 | 1981-12-03 |
+|     10 | MILLER | 1982-01-23 | 1982-12-09 |
++--------+--------+------------+------------+
+3 rows in set (0.11 sec)
+*/
+
+-- 08. 
