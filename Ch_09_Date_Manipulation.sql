@@ -84,3 +84,42 @@ from t1
 +------+------+---------------+
 1 row in set (0.00 sec)
 */
+
+-- 02. Determining the number of days in the year
+-- I would like to find out how many days there are in current year!
+
+-- I have an idea, let's try to get first of this year, and then calculate
+-- the difference between end of this year and first of this year.
+
+select date_add(current_date, interval -dayofyear(current_date)+1 day) dy
+from t1;
+
+/* Output:
++------------+
+| dy         |
++------------+
+| 2019-01-01 |
++------------+
+1 row in set (0.00 sec)
+*/
+
+/* Including the very last day, off by 1 otherwise */
+select x.*, datediff(EndOfYear, FirstOfYear)+1 NumOfDay
+from (
+select date_add(current_date, 
+                interval -dayofyear(current_date)+1 day) as FirstOfYear,
+       date_add(
+       date_add(current_date,
+                interval 1 year),
+                interval -dayofyear(current_date)-1 day) as EndOfYear
+from t1
+) x ; 
+
+/* Output:
++-------------+------------+----------+
+| FirstOfYear | EndOfYear  | NumOfDay |
++-------------+------------+----------+
+| 2019-01-01  | 2019-12-31 |      365 |
++-------------+------------+----------+
+1 row in set (0.00 sec)
+*/
