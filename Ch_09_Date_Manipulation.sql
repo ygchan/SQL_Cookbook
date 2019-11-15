@@ -142,3 +142,24 @@ from t1;
 +------+------+------+------+------+------+
 1 row in set (0.01 sec)
 */
+
+-- 04. Determing the first and last day of a month
+-- Similiar to excel's eomonth function, but how would you do it in MySQL?
+
+select date_add(current_date,
+                interval -day(current_date)+1 day) firstday,
+       last_day(current_date) last_day
+from t1;
+
+-- day() is a new function to me.
+-- It returns the number of days into the current month.
+-- For example: 11/14/2019, it will return 14.
+
+/* Output:
++------------+------------+
+| firstday   | last_day   |
++------------+------------+
+| 2019-11-01 | 2019-11-30 |
++------------+------------+
+1 row in set (0.01 sec)
+*/
