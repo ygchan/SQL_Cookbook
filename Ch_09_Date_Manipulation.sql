@@ -123,3 +123,22 @@ from t1
 +-------------+------------+----------+
 1 row in set (0.00 sec)
 */
+
+-- 03. Extracting the units of a time from a date
+
+select date_format(current_timestamp, '%k') hr,
+       date_format(current_timestamp, '%i') min,
+       date_format(current_timestamp, '%s') sec,
+       date_format(current_timestamp, '%d') dy,
+       date_format(current_timestamp, '%m') mon,
+       date_format(current_timestamp, '%Y') yr
+from t1;
+
+/* Output:
++------+------+------+------+------+------+
+| hr   | min  | sec  | dy   | mon  | yr   |
++------+------+------+------+------+------+
+| 21   | 10   | 10   | 14   | 11   | 2019 |
++------+------+------+------+------+------+
+1 row in set (0.01 sec)
+*/
