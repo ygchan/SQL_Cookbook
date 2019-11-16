@@ -43,3 +43,35 @@ from emp
 order by sal limit 5 offset 5;
 
 -- limit x offset y << This is easy to read and easy to write!
+-- Offset clause will start at that row 0 (being first)
+-- Limit clause will restricts the number of rows returned.
+
+-- 02. Skipping n rows from a table
+-- Return every other emlpoyee in the table.
+
+select a.ename, (select count(*) from emp b
+                 where b.ename <= a.ename) as rownum
+from emp a
+order by a.ename;
+
+/* Output:
++--------+--------+
+| ename  | rownum |
++--------+--------+
+| ADAMS  |      1 |
+| ALLEN  |      2 |
+| BLAKE  |      3 |
+| CLARK  |      4 |
+| FORD   |      5 |
+| JAMES  |      6 |
+| JONES  |      7 |
+| KING   |      8 |
+| MARTIN |      9 |
+| MILLER |     10 |
+| SCOTT  |     11 |
+| SMITH  |     12 |
+| TURNER |     13 |
+| WARD   |     14 |
++--------+--------+
+14 rows in set (0.00 sec)
+*/
