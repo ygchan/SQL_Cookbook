@@ -49,6 +49,10 @@ order by sal limit 5 offset 5;
 -- 02. Skipping n rows from a table
 -- Return every other emlpoyee in the table.
 
+
+-- First step, create row numbers using MySQL
+-- count how many employee names are less than the current
+
 select a.ename, (select count(*) from emp b
                  where b.ename <= a.ename) as rownum
 from emp a
@@ -74,4 +78,34 @@ order by a.ename;
 | WARD   |     14 |
 +--------+--------+
 14 rows in set (0.00 sec)
+*/
+
+-- Then the next step is mod rownum by 2 with remainder = 1
+-- Since we are starting at 1
+-- mod(1, 2) = 1
+-- mod(2, 2) = 0 
+-- etc
+
+select x.ename, x.rownum
+from (
+select a.ename, (select count(*) from emp b
+               where a.ename <= b.ename) as rownum
+from emp a
+) x
+where mod(x.rownum, 2) = 1
+order by x.rownum;
+
+/* Output:
++--------+--------+
+| ename  | rownum |
++--------+--------+
+| WARD   |      1 |
+| SMITH  |      3 |
+| MILLER |      5 |
+| KING   |      7 |
+| JAMES  |      9 |
+| CLARK  |     11 |
+| ALLEN  |     13 |
++--------+--------+
+7 rows in set (0.00 sec)
 */
