@@ -109,3 +109,63 @@ order by x.rownum;
 +--------+--------+
 7 rows in set (0.00 sec)
 */
+
+-- 03. Incorporating or logic when using an outer joins
+-- You want to return the name and department information for all
+-- employees in the department 10 and 20 along with department information
+-- 30 and 40. But for 30 and 40 you don't need emlpoyee information.
+
+select e.ename, d.deptno, d.dname, d.loc
+from dept d left join emp e 
+   on (d.deptno = e.deptno
+      and (e.deptno = 10 or e.deptno = 20))
+order by 2;
+
+/* Output:
++--------+--------+------------+----------+
+| ename  | deptno | dname      | loc      |
++--------+--------+------------+----------+
+| MILLER |     10 | ACCOUNTING | NEW YORK |
+| CLARK  |     10 | ACCOUNTING | NEW YORK |
+| KING   |     10 | ACCOUNTING | NEW YORK |
+| SMITH  |     20 | RESEARCH   | DALLAS   |
+| FORD   |     20 | RESEARCH   | DALLAS   |
+| JONES  |     20 | RESEARCH   | DALLAS   |
+| SCOTT  |     20 | RESEARCH   | DALLAS   |
+| ADAMS  |     20 | RESEARCH   | DALLAS   |
+| NULL   |     30 | SALES      | CHICAGO  |
+| NULL   |     40 | OPERATIONS | BOSTON   |
++--------+--------+------------+----------+
+10 rows in set (0.01 sec)
+*/
+
+/* Kind of interesting, I didn't thought about using an or here */
+
+-- Alternatively, you can filter on inline view << -- see line 149-151
+-- and then use an outer left join
+
+select e.ename, d.deptno, d.dname, d.loc
+from dept d left join (
+   select ename, deptno
+   from emp
+   where deptno in (10, 20)
+) e on (e.deptno = d.deptno)
+order by 2;
+
+/* Output:
++--------+--------+------------+----------+
+| ename  | deptno | dname      | loc      |
++--------+--------+------------+----------+
+| CLARK  |     10 | ACCOUNTING | NEW YORK |
+| KING   |     10 | ACCOUNTING | NEW YORK |
+| MILLER |     10 | ACCOUNTING | NEW YORK |
+| SMITH  |     20 | RESEARCH   | DALLAS   |
+| JONES  |     20 | RESEARCH   | DALLAS   |
+| SCOTT  |     20 | RESEARCH   | DALLAS   |
+| ADAMS  |     20 | RESEARCH   | DALLAS   |
+| FORD   |     20 | RESEARCH   | DALLAS   |
+| NULL   |     30 | SALES      | CHICAGO  |
+| NULL   |     40 | OPERATIONS | BOSTON   |
++--------+--------+------------+----------+
+10 rows in set (0.00 sec)
+*/
