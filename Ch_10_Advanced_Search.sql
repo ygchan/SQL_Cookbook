@@ -169,3 +169,14 @@ order by 2;
 +--------+--------+------------+----------+
 10 rows in set (0.00 sec)
 */
+
+-- 04. Filling in missing values in a range of values
+-- Return the number of employees hired each year for the entire decade of 
+-- a certain time, but there are some years with no employee hired.
+-- Please fill in the blank when they are 0.
+
+-- Start: Use T10 as a pivot table, because it has 10 rows.
+-- Use the build in function extract to generate one row for each year
+-- since 1980 (or whever it started).
+-- Then use an outer join (left join) to get the count.
+
