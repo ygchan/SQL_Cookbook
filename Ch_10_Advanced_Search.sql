@@ -197,3 +197,22 @@ from emp
 group by extract(year from hiredate)
 ) x
 on (y.yr = x.yr);
+
+-- 05. Generating Consecutive Numeric Values
+-- In SAS, there is an automatic variable _n_ for generating row number.
+-- But what about in MySQL?
+
+/* Output that we wanted
+ID
+--
+ 1
+ 2
+ 3
+ 4
+...
+*/
+
+select id
+from generate_series(1, 10) x(id);
+
+-- This can be used in Amazon AWS redshift too!!
