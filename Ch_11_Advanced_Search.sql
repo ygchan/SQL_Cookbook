@@ -290,25 +290,47 @@ from emp b;
 
 -- Sandbox attemp #2.... Multiple table
 create table temp_emp as 
-select *, 
-  (select count(distinct hiredate)
+select b.*,
+  (select min(hiredate)
    from emp a
-   where a.hiredate <= b.hiredate) as rank,
-  (select count(distinct hiredate) + 1
-   from emp a
-   where a.hiredate <= b.hiredate) as rank_offset
-from emp b
-order by rank;
+   where a.hiredate > b.hiredate) next_hiredate
+from emp b;
 
 select a.*
-from emp a
-  inner join (
-    select b.*,
-      (select min(hiredate)
-       from emp a
-       where a.hiredate > b.hiredate) next_hiredate
-    from emp b
-  ) c 
-    on a.hiredate = c.next_hiredate
-where a.sal < c.sal
-order by a.hiredate;
+from temp_emp a
+  inner join temp_emp b on a.hiredate = b.next_hiredate
+where a.sal <= b.sal;
+
+-- Solution from book
+select ename, sal, hiredate
+from (
+  select a.ename, a.sal, a.hiredate,
+    (select min(hiredate) from emp b
+    where b.hiredate > a.hiredate
+    and b.sal > a.sal) as next_sal_grtr,
+    (select min(hiredate) from emp b
+    where b.hiredate > a.hiredate) as next_hire
+  from emp a
+  ) x
+where next_sal_grtr = next_hire;
+
+/* Output:
++--------+------+------------+
+| ename  | sal  | hiredate   |
++--------+------+------------+
+| SMITH  |  960 | 1980-12-17 |
+| WARD   | 1250 | 1981-02-22 |
+| MARTIN | 1250 | 1981-09-28 |
+| JAMES  |  950 | 1981-12-03 |
+| MILLER | 1300 | 1982-01-23 |
++--------+------+------------+
+*/
+
+-- Discussion: You want to find the first hiredate after this employee
+-- And then find the next hiredate where the salary is also higher
+-- Join them (next_hire and next_hire_grt_sal)
+-- The result is exactly what you are looking for. 
+-- Comment: This is really smart... I never seen this before.
+-- Practiced again with the concept at 5:41PM at home.
+
+
