@@ -377,3 +377,33 @@ select ename, sal,
     (select max(sal) from emp x)) as backward
 from emp a
 order by a.sal;
+
+-- 09. Ranking Result (Classic Interview Problem)
+select
+  /* Scalar Subquery to get the rank */
+  (select count(distinct sal) 
+  from emp a where a.sal <= b.sal) as rank, sal
+from emp b
+order by rank;
+
+/* Output:
++------+------+
+| rank | sal  |
++------+------+
+|    1 |  950 |
+|    2 |  960 |
+|    3 | 1250 |
+|    3 | 1250 |
+|    4 | 1300 |
+|    5 | 1320 |
+|    6 | 1500 |
+|    7 | 1600 |
+|    8 | 2450 |
+|    9 | 2850 |
+|   10 | 3570 |
+|   11 | 3600 |
+|   11 | 3600 |
+|   12 | 5000 |
++------+------+
+14 rows in set (0.00 sec)
+*/
