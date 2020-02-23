@@ -333,4 +333,36 @@ where next_sal_grtr = next_hire;
 -- Comment: This is really smart... I never seen this before.
 -- Practiced again with the concept at 5:41PM at home.
 
+-- 08. Shifting Row Values
+-- Return each employee's name and salary along with the next highest and 
+-- lowest salaries.
 
+select ename, sal,
+  coalesce((select max(sal) from emp x
+  where x.sal < a.sal), "MIN") as forward,
+  coalesce((select min(sal) from emp x
+  where x.sal > a.sal), "MAX") as backward
+from emp a
+order by a.sal;
+
+/* Output:
++--------+------+---------+----------+
+| ename  | sal  | forward | backward |
++--------+------+---------+----------+
+| JAMES  |  950 | MIN     | 960      |
+| SMITH  |  960 | 950     | 1250     |
+| WARD   | 1250 | 960     | 1300     |
+| MARTIN | 1250 | 960     | 1300     |
+| MILLER | 1300 | 1250    | 1320     |
+| ADAMS  | 1320 | 1300    | 1500     |
+| TURNER | 1500 | 1320    | 1600     |
+| ALLEN  | 1600 | 1500    | 2450     |
+| CLARK  | 2450 | 1600    | 2850     |
+| BLAKE  | 2850 | 2450    | 3570     |
+| JONES  | 3570 | 2850    | 3600     |
+| FORD   | 3600 | 3570    | 5000     |
+| SCOTT  | 3600 | 3570    | 5000     |
+| KING   | 5000 | 3600    | MAX      |
++--------+------+---------+----------+
+14 rows in set (0.01 sec)
+*/
