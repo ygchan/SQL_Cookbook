@@ -407,3 +407,17 @@ order by rank;
 +------+------+
 14 rows in set (0.00 sec)
 */
+
+-- Discussion: This is the same as DENSE_RANK_OVER() in Oracle.
+
+-- 10. Supressing Duplicates
+-- This is the easiest thing to do in MySQL, but author has another suggestion.
+
+-- Any additional columns will affect (allow for duplicate job)
+select distinct job
+from emp;
+
+-- This is another way, not sure if performance will be any siginficance.
+select job
+from emp
+group by job;
