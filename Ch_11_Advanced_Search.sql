@@ -232,3 +232,49 @@ order by rnk;
 
 -- Discussion: First use scalar subquery to determine what is the rank
 -- Then that table will be filtered for the top 5 ranked salary.
+
+-- 06. Finding records with the highest and lowest values
+-- IE: JAMES and KING
+
+/* Output:
++--------+------+------+
+| ename  | sal  | rank |
++--------+------+------+
+| SMITH  |  960 |    2 |
+| ALLEN  | 1600 |    7 |
+| WARD   | 1250 |    3 |
+| JONES  | 3570 |   10 |
+| MARTIN | 1250 |    3 |
+| BLAKE  | 2850 |    9 |
+| CLARK  | 2450 |    8 |
+| SCOTT  | 3600 |   11 |
+| KING   | 5000 |   12 |
+| TURNER | 1500 |    6 |
+| ADAMS  | 1320 |    5 |
+| JAMES  |  950 |    1 |
+| FORD   | 3600 |   11 |
+| MILLER | 1300 |    4 |
++--------+------+------+
+*/
+
+select *
+from emp
+where sal in ((select min(sal) from emp),
+              (select max(sal) from emp));
+
+/* Output:
++-------+-------+-----------+------+------------+------+------+--------+
+| EMPNO | ENAME | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+-------+-----------+------+------------+------+------+--------+
+|  7839 | KING  | PRESIDENT | NULL | 1981-11-17 | 5000 | NULL |     10 |
+|  7900 | JAMES | CLERK     | 7698 | 1981-12-03 |  950 | NULL |     30 |
++-------+-------+-----------+------+------------+------+------+--------+
+*/
+
+-- Discussion: I realized after the fact, we do not need to have rank to
+-- find out what is the employee records with the min and max value.
+-- Simple select min/max with sal will be enough.
+
+
+
+
