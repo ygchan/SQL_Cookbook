@@ -275,6 +275,40 @@ where sal in ((select min(sal) from emp),
 -- find out what is the employee records with the min and max value.
 -- Simple select min/max with sal will be enough.
 
+-- 07. Investiagating future rows
 
+-- Sandbox attempt... Do not work.
+select *, 
+  (select count(distinct hiredate)
+  from emp a 
+  where a.hiredate <= b.hiredate) as rank,
+  case 
+    when b.sal <= (select sal from emp c 
+                   where c.rank = b.rank + 1)
+    end as "Y" as less
+from emp b;
 
+-- Sandbox attemp #2.... Multiple table
+create table temp_emp as 
+select *, 
+  (select count(distinct hiredate)
+   from emp a
+   where a.hiredate <= b.hiredate) as rank,
+  (select count(distinct hiredate) + 1
+   from emp a
+   where a.hiredate <= b.hiredate) as rank_offset
+from emp b
+order by rank;
 
+select a.*
+from emp a
+  inner join (
+    select b.*,
+      (select min(hiredate)
+       from emp a
+       where a.hiredate > b.hiredate) next_hiredate
+    from emp b
+  ) c 
+    on a.hiredate = c.next_hiredate
+where a.sal < c.sal
+order by a.hiredate;
