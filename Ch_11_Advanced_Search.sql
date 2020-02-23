@@ -198,21 +198,37 @@ group by extract(year from hiredate)
 ) x
 on (y.yr = x.yr);
 
--- 05. Generating Consecutive Numeric Values
--- In SAS, there is an automatic variable _n_ for generating row number.
--- But what about in MySQL?
+-- 05. Selecting the Top n records
+-- Limit a result set to a specific number of recrods based on
+-- ranking of some sort. For example: return the names and salaries of 
+-- of the employees with top 5 salaries.
 
-/* Output that we wanted
-ID
---
- 1
- 2
- 3
- 4
-...
+select ename, sal, rnk
+from (
+select (
+	select count(distinct b.sal)
+	from emp b
+	where a.sal <= b.sal
+) as rnk,
+a.sal,
+a.ename
+from emp a
+) x
+where rnk <= 5
+order by rnk;
+
+/* Output:
++-------+------+------+
+| ename | sal  | rank |
++-------+------+------+
+| KING  | 5000 |    1 |
+| FORD  | 3600 |    3 |
+| SCOTT | 3600 |    3 |
+| JONES | 3570 |    4 |
+| BLAKE | 2850 |    5 |
++-------+------+------+
+5 rows in set (0.00 sec)
 */
 
-select id
-from generate_series(1, 10) x(id);
-
--- This can be used in Amazon AWS redshift too!!
+-- Discussion: First use scalar subquery to determine what is the rank
+-- Then that table will be filtered for the top 5 ranked salary.
