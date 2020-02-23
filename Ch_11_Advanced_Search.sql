@@ -366,3 +366,14 @@ order by a.sal;
 +--------+------+---------+----------+
 14 rows in set (0.01 sec)
 */
+
+-- Small change base on the book solution:
+select ename, sal,
+  coalesce(
+    (select min(sal) from emp x where x.sal > a.sal),
+    (select min(sal) from emp x)) as forward,
+  coalesce(
+    (select max(sal) from emp x where x.sal < a.sal),
+    (select max(sal) from emp x)) as backward
+from emp a
+order by a.sal;
