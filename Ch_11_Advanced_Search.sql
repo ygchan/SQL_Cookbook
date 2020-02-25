@@ -487,6 +487,30 @@ order by 1, 4 desc;
 -- Max() functions are then pointing explicitly to the current level.
 -- Without using it, that does not work.
 
+-- 12. Generating Simple Forecasts
+-- MySQL does not support. But for AWS Redshift, this works.
+
+select id,
+  order_date,
+  process_date,
+  case when gs.n >= 2
+    then process_date + 1
+    else NULL
+  end as verified,
+  case when gs.n = 3
+    then process_date + 2
+    else NULL
+  end as shipped
+from (
+  select gs.id,
+  current_date+gs.id as order_date
+  current_date+gs.id+2 as process_date
+from generate_series(1, 3) gs(id)
+) orders,
+  generate_series(1,3)gs(n)
+
+)
+
 
 
 
