@@ -42,3 +42,19 @@ from (
 	from emp
 	group by deptno
 ) x;
+
+-- Solution is actually again simplier (4 lines vs. 12 lines)
+select 
+  sum(case when deptno = 10 then 1 else 0 end) as deptno_10,
+  sum(case when deptno = 20 then 1 else 0 end) as deptno_20,
+  sum(case when deptno = 30 then 1 else 0 end) as deptno_30
+from emp;
+
+/* Output:
++-----------+-----------+-----------+
+| deptno_10 | deptno_20 | deptno_30 |
++-----------+-----------+-----------+
+|         3 |         5 |         6 |
++-----------+-----------+-----------+
+1 row in set (0.00 sec)
+*/
