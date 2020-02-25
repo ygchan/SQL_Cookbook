@@ -421,3 +421,79 @@ from emp;
 select job
 from emp
 group by job;
+
+-- 11. Finding Knight Values
+-- Return a result set that contains each employee's name, department number
+-- date they are hired and the salary of the last employee hired.
+
+select deptno, ename, sal, hiredate,
+  (
+    select sal
+    from emp b
+    where a.deptno = b.deptno
+    and a.hiredate = (select max(hiredate)
+                      from emp c 
+                      where c.deptno = b.deptno
+                      group by c.deptno)
+  )
+from emp a;
+
+/* Does not work */
+/* ERROR 1242 (21000): Subquery returns more than 1 row */
+
+-- Solution from book
+select e.deptno,
+  e.ename,
+  e.sal,
+  e.hiredate,
+  /* Find the salary of employee with this hiredate */
+  (select max(d.sal)
+  from emp d
+  /* emp d = emp e */
+  where d.deptno = e.deptno
+  and d.hiredate = 
+    /* Find the latest hire date from employee */
+    (select max(f.hiredate)
+    from emp f
+    /* emp f = emp e (from outter) */
+    where f.deptno = e.deptno)) as latest_sal
+from emp e
+order by 1, 4 desc;
+
+/* Output:
++--------+--------+------+------------+------------+
+| deptno | ename  | sal  | hiredate   | latest_sal |
++--------+--------+------+------------+------------+
+|     10 | MILLER | 1300 | 1982-01-23 |       1300 |
+|     10 | KING   | 5000 | 1981-11-17 |       1300 |
+|     10 | CLARK  | 2450 | 1981-06-09 |       1300 |
+|     20 | ADAMS  | 1320 | 1983-01-12 |       1320 |
+|     20 | SCOTT  | 3600 | 1982-12-09 |       1320 |
+|     20 | FORD   | 3600 | 1981-12-03 |       1320 |
+|     20 | JONES  | 3570 | 1981-04-02 |       1320 |
+|     20 | SMITH  |  960 | 1980-12-17 |       1320 |
+|     30 | JAMES  |  950 | 1981-12-03 |        950 |
+|     30 | MARTIN | 1250 | 1981-09-28 |        950 |
+|     30 | TURNER | 1500 | 1981-09-08 |        950 |
+|     30 | BLAKE  | 2850 | 1981-05-01 |        950 |
+|     30 | WARD   | 1250 | 1981-02-22 |        950 |
+|     30 | ALLEN  | 1600 | 1981-02-20 |        950 |
++--------+--------+------+------------+------------+
+14 rows in set (0.01 sec)
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
