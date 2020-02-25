@@ -11,3 +11,34 @@
 -- Another focus is on transposing / pivoting result sets, converting rows
 -- into columns. Pivoting is extremely important topic.
 
+-- 01. Pivoting result set into one row
+
+select deptno, count(1) as count
+from emp
+group by deptno;
+
+/* Output:
++--------+-------+
+| deptno | count |
++--------+-------+
+|     10 |     3 |
+|     20 |     5 |
+|     30 |     6 |
++--------+-------+
+3 rows in set (0.00 sec)
+*/
+
+/* George's attempt - I have seen this problem before
+and practiced with Sally too. */
+select 
+	sum(case when deptno = 10 then count
+	else 0 end) as deptno_10,
+	sum(case when deptno = 20 then count
+	else 0 end) as deptno_20,
+	sum(case when deptno = 30 then count
+	else 0 end) as deptno_30
+from (
+	select deptno, count(1) as count
+	from emp
+	group by deptno
+) x;
