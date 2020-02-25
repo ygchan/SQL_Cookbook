@@ -44,6 +44,8 @@ from (
 ) x;
 
 -- Solution is actually again simplier (4 lines vs. 12 lines)
+-- Transpose the result set using a case expression and the aggregate
+-- function sum base on deptno.
 select 
   sum(case when deptno = 10 then 1 else 0 end) as deptno_10,
   sum(case when deptno = 20 then 1 else 0 end) as deptno_20,
@@ -58,3 +60,33 @@ from emp;
 +-----------+-----------+-----------+
 1 row in set (0.00 sec)
 */
+
+-- Discussion: First you have to use case expression to separate the rows
+-- into rows columns. Then sum the count of occurrence of each deptno.
+-- Since you want one row, you will not use group by and deptno.
+
+-- Another solution is to use inline view
+-- Please use max aggerate function.
+select 
+  max(case when deptno = 10 then count else null end) as deptno_10,
+  max(case when deptno = 20 then count else null end) as deptno_20,
+  max(case when deptno = 30 then count else null end) as deptno_30
+from (
+select deptno, count(1) as count
+from emp p
+group by deptno
+) x;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
