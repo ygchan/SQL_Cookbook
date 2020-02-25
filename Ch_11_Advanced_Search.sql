@@ -482,7 +482,10 @@ order by 1, 4 desc;
 14 rows in set (0.01 sec)
 */
 
-
+-- Discussion: Please notice the importance of the e.deptno
+-- The inner 2 subquery are both referring to the outter emp e table
+-- Max() functions are then pointing explicitly to the current level.
+-- Without using it, that does not work.
 
 
 
