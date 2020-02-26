@@ -205,12 +205,14 @@ from x;
 -- Solution: using cartesian product.
 
 select d.deptno,
+  -- without using case expression, you will get multiple rows
   case d.deptno
     when 10 then e.deptno_10
     when 20 then e.deptno_20
     when 30 then e.deptno_30 
   end as counts_by_dept
 from 
+  -- cartesian product
   (
   select 
     sum(case when deptno=10 then 1 else 0 end) as deptno_10,
@@ -238,8 +240,26 @@ from
 -- Becuase it must have a cardinality of at least the number of columns
 -- you want to transpose.
 
+-- Discussion: We used inline view for the "wide" table, or denormalized table.
+-- Using a cartesian product allows you to return a row for each column.
 
+/* Remember do not put 
 
+from 
+  (select 
+  sum(case when deptno = 10 then 1 else 0 end) as deptno_10,
+  sum(case when deptno = 20 then 1 else 0 end) as deptno_20,
+  sum(case when deptno = 30 then 1 else 0 end) as deptno_30
+  from emp e
+  ) c,
+  (select distinct deptno
+  from emp
+  where deptno <= 30
+  ) d;
+
+when it is open like that, MySQL will throw all kind of errors.
+
+*/ 
 
 
 
