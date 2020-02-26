@@ -145,6 +145,44 @@ group by rank;
 -- result set using case expression and the aggregate function max while 
 -- grouping on the value returned by the scalary subquery.
 
+-- Important thing: George you forgot to put end at the case statement
+-- a few times, it created a syntax error that is not easy to CATCH!
+-- remember to GROUP BY RANK if you don't want a lot of gaps.
+
+-- Create combination and rank
+-- Use case expression and max/min aggerate function
+-- Group by rank to remove duplicate
+
+/* Pracitce */
+-- step 1: create a combination of job, ename with rank
+select job, ename,
+  /* subquery to get rank or rownumber */
+  (select count(*) from emp s
+  where s.job = e.job and s.empno < e.empno) as rank
+from emp e;
+
+-- step 2: pivot using case expression and max aggerate function.
+select 
+  max(case when x.job = 'CLERK' then x.ename end) as CLERK,
+  max(case when x.job = 'SALESMAN' then x.ename end) as SALESMAN,
+  max(case when x.job = 'MANAGER' then x.ename end) as MANAGER,
+  max(case when x.job = 'ANALYST' then x.ename end) as ANALYST
+from (
+  select job, ename,
+    (select count(*) from emp s
+    where s.job = e.job and s.empno < e.empno) as rank
+  from emp e
+) x
+group by rank;
+
+-- 03. Reverse
+
+
+
+
+
+
+
 
 
 
