@@ -258,8 +258,56 @@ from
   ) d;
 
 when it is open like that, MySQL will throw all kind of errors.
-
 */ 
+
+-- 04: Is Skipped as not implemented in MySQL and PostgreSQL.
+-- 05: Suppressing Repeating Values from result set
+
+-- Create a rank first
+select 
+  case rank
+  when 0 then x.deptno
+  else ''
+  end as DEPT,
+  ename
+from (
+select deptno, ename,
+  (select count(*) from emp s
+  where s.deptno = e.deptno and s.empno < e.empno) as rank
+from emp e
+order by deptno, ename
+) x
+order by deptno, rank;
+
+/* Output:
++------+--------+
+| DEPT | ename  |
++------+--------+
+| 10   | CLARK  |
+|      | KING   |
+|      | MILLER |
+| 20   | SMITH  |
+|      | JONES  |
+|      | SCOTT  |
+|      | ADAMS  |
+|      | FORD   |
+| 30   | ALLEN  |
+|      | WARD   |
+|      | MARTIN |
+|      | BLAKE  |
+|      | TURNER |
+|      | JAMES  |
++------+--------+
+14 rows in set (0.00 sec)
+*/
+
+-- Discussion: The author did not provide MySQL solution.
+-- But I think this will work fine. Author has taught me really well...
+-- I am not sure I could have it done without him showing me all the examples.
+
+
+
+
 
 
 
