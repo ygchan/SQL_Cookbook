@@ -305,6 +305,7 @@ order by deptno, rank;
 -- But I think this will work fine. Author has taught me really well...
 -- I am not sure I could have it done without him showing me all the examples.
 
+-- 06. Pivoting result set to faciliate inter-row calculation
 
 
 
