@@ -175,12 +175,68 @@ from (
 ) x
 group by rank;
 
--- 03. Reverse
+-- 03. Reverse pivoting result set
+-- You want to transfrom columns to rows.
 
+-- Given this please transpose it back.
+/* Output:
++-----------+-----------+-----------+
+| deptno_10 | deptno_20 | deptno_30 |
++-----------+-----------+-----------+
+|         3 |         5 |         6 |
++-----------+-----------+-----------+
+1 row in set (0.00 sec)
+*/
 
+/* First attemp: */
+select '10' as deptno,
+  deptno_10 as counts_by_dept
+from x
+union all
+select '20' as deptno,
+  deptno_20 as counts_by_dept
+from x
+union all
+select '30' as deptno,
+  deptno_30 as counts_by_dept
+from x;
 
+-- Feedback: eh... not really correct?
+-- Solution: using cartesian product.
 
+select d.deptno,
+  case d.deptno
+    when 10 then e.deptno_10
+    when 20 then e.deptno_20
+    when 30 then e.deptno_30 
+  end as counts_by_dept
+from 
+  (
+  select 
+    sum(case when deptno=10 then 1 else 0 end) as deptno_10,
+    sum(case when deptno=20 then 1 else 0 end) as deptno_20,
+    sum(case when deptno=30 then 1 else 0 end) as deptno_30
+  from emp
+  ) e,
+  (select distinct deptno 
+  from emp
+  where deptno <= 30) d;
 
+/* Output:
++--------+----------------+
+| deptno | counts_by_dept |
++--------+----------------+
+|     20 |              5 |
+|     30 |              6 |
+|     10 |              3 |
++--------+----------------+
+3 rows in set (0.00 sec)
+*/
+
+-- Using cartesian product to convert columns to rows.
+-- But you must know in advance how many columns you want to convert to rows.
+-- Becuase it must have a cardinality of at least the number of columns
+-- you want to transpose.
 
 
 
