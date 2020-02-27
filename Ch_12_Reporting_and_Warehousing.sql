@@ -306,11 +306,44 @@ order by deptno, rank;
 -- I am not sure I could have it done without him showing me all the examples.
 
 -- 06. Pivoting result set to faciliate inter-row calculation
+-- Get the sum of the department and calculate in-line difference
 
+select 
+  sum(case when deptno = 10 then sal else 0 end) as d10_sal,
+  sum(case when deptno = 20 then sal else 0 end) as d20_sal,
+  sum(case when deptno = 30 then sal else 0 end) as d30_sal
+from emp;
 
+/* Output:
++---------+---------+---------+
+| d10_sal | d20_sal | d30_sal |
++---------+---------+---------+
+|    8750 |   13050 |    9400 |
++---------+---------+---------+
+1 row in set (0.00 sec)
+*/
 
+-- Then calculate it using inline view
 
+select 
+  d20_sal - d10_sal as d20_d10_dif,
+  d20_sal - d30_sal as d20_d30_dif
+from (
+select 
+  sum(case when deptno = 10 then sal else 0 end) as d10_sal,
+  sum(case when deptno = 20 then sal else 0 end) as d20_sal,
+  sum(case when deptno = 30 then sal else 0 end) as d30_sal
+from emp
+) totals_by_dept;
 
+/* Output:
++-------------+-------------+
+| d20_d10_dif | d20_d30_dif |
++-------------+-------------+
+|        4300 |        3650 |
++-------------+-------------+
+1 row in set (0.02 sec)
+*/
 
 
 
