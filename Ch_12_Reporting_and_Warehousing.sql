@@ -415,16 +415,16 @@ order by bucket, rank;
 */
 
 -- My solution is pretty close to the book's.
+/* Find a small typo in the book on P.389. */
 
 select ceil(rnk/5.0) as bucket,
   empno, ename
 from (
   select e.empno, e.ename,
-  (select count(*) from emp d
-  where e.empno < d.empno) + 1 as rnk
+    (select count(*) from emp d
+    where d.empno < e.empno)+1 as rnk
   from emp e
-  order by rnk
 ) x
-order by bucket, empno;
+order by bucket;
 
 
