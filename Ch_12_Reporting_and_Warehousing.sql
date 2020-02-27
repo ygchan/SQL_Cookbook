@@ -345,6 +345,86 @@ from emp
 1 row in set (0.02 sec)
 */
 
+-- Discussion: Sum(Case expression) aggerate and create expression base
+-- on the columns choices.
 
+-- 07. Creating Bucket of Data of a Fixed Size
+-- create buckets of 5 employee each base on employee number.
+
+-- create rank first
+select empno, ename,
+  (select count(*) 
+  from emp a
+  where a.empno < e.empno) as rank
+from emp e;
+
+/* Output:
++-------+--------+------+
+| empno | ename  | rank |
++-------+--------+------+
+|  7369 | SMITH  |    0 |
+|  7499 | ALLEN  |    1 |
+|  7521 | WARD   |    2 |
+|  7566 | JONES  |    3 |
+|  7654 | MARTIN |    4 |
+|  7698 | BLAKE  |    5 |
+|  7782 | CLARK  |    6 |
+|  7788 | SCOTT  |    7 |
+|  7839 | KING   |    8 |
+|  7844 | TURNER |    9 |
+|  7876 | ADAMS  |   10 |
+|  7900 | JAMES  |   11 |
+|  7902 | FORD   |   12 |
+|  7934 | MILLER |   13 |
++-------+--------+------+
+14 rows in set (0.00 sec)
+*/
+
+-- each bucket has 0 element
+-- div is a function that divide and return int value
+select (rank div 5 + 1) as bucket, x.empno, x.ename
+from (select 
+  empno, ename,
+  (select count(*) 
+  from emp a
+  where a.empno < e.empno) as rank
+from emp e
+) x 
+order by bucket, rank; 
+
+/* Output:
++--------+-------+--------+
+| bucket | empno | ename  |
++--------+-------+--------+
+|      1 |  7369 | SMITH  |
+|      1 |  7499 | ALLEN  |
+|      1 |  7521 | WARD   |
+|      1 |  7566 | JONES  |
+|      1 |  7654 | MARTIN |
+|      2 |  7698 | BLAKE  |
+|      2 |  7782 | CLARK  |
+|      2 |  7788 | SCOTT  |
+|      2 |  7839 | KING   |
+|      2 |  7844 | TURNER |
+|      3 |  7876 | ADAMS  |
+|      3 |  7900 | JAMES  |
+|      3 |  7902 | FORD   |
+|      3 |  7934 | MILLER |
++--------+-------+--------+
+14 rows in set (0.00 sec)
+*/
+
+-- My solution is pretty close to the book's.
+
+select ceil(rnk/5.0) as bucket,
+  empno, ename
+from (
+  select e.empno, e.ename,
+  (select count(*) from emp d
+  where e.empno < d.empno) + 1 as rnk
+  from emp e
+  order by rnk
+) x
+order by bucket, empno;
 
 
