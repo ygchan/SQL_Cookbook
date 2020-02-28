@@ -427,4 +427,36 @@ from (
 ) x
 order by bucket;
 
+-- 08. Creating a Predeined number of Buckets
+-- Please organize your data into fixed number of buckets.
+-- You know how many elements, but don't know how many bucket.
 
+select mod(count(*), 4) + 1 as grp,
+  e.empno,
+  e.ename
+from emp e, emp d
+where e.empno >= d.empno
+group by e.empno, e.ename
+order by 1;
+
+/* Output:
++------+-------+--------+
+| grp  | empno | ename  |
++------+-------+--------+
+|    1 |  7566 | JONES  |
+|    1 |  7900 | JAMES  |
+|    1 |  7788 | SCOTT  |
+|    2 |  7369 | SMITH  |
+|    2 |  7839 | KING   |
+|    2 |  7654 | MARTIN |
+|    2 |  7902 | FORD   |
+|    3 |  7499 | ALLEN  |
+|    3 |  7844 | TURNER |
+|    3 |  7698 | BLAKE  |
+|    3 |  7934 | MILLER |
+|    4 |  7521 | WARD   |
+|    4 |  7876 | ADAMS  |
+|    4 |  7782 | CLARK  |
++------+-------+--------+
+14 rows in set (0.09 sec)
+*/
