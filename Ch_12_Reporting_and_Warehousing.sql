@@ -460,3 +460,59 @@ order by 1;
 +------+-------+--------+
 14 rows in set (0.09 sec)
 */
+
+-- 09. Creating Horizontal Histograms
+-- Use SQL to generate histograms that extend horizontally.
+-- Display the number of employees in each department as
+-- horizontal histograms with each employee represented by *.
+
+select deptno, count(*) as count
+from emp
+group by deptno;
+
+select deptno,
+  case count
+    when 1 then '*'
+    when 2 then '**'
+    when 3 then '***'
+    when 4 then '****'
+    when 5 then '*****'
+    when 6 then '******'
+    when 7 then '*******'
+    when 8 then '********'
+    when 9 then '*********'
+    when 10 then '**********'
+  end as cnt
+from (
+  select deptno, count(*) as count
+  from emp
+  group by deptno
+) x;
+
+/* Output: 
++--------+--------+
+| deptno | cnt    |
++--------+--------+
+|     10 | ***    |
+|     20 | *****  |
+|     30 | ****** |
++--------+--------+
+3 rows in set (0.02 sec)
+*/
+
+-- Somewhat close to the book
+select deptno,
+  lpad('*', count(*), '*') as cnt
+from emp
+group by deptno;
+
+/* Output:
++--------+--------+
+| deptno | cnt    |
++--------+--------+
+|     10 | ***    |
+|     20 | *****  |
+|     30 | ****** |
++--------+--------+
+3 rows in set (0.02 sec)
+*/
