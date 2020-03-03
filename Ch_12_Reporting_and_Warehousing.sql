@@ -516,3 +516,68 @@ group by deptno;
 +--------+--------+
 3 rows in set (0.02 sec)
 */
+
+-- 10. Creating Vertical Histograms
+-- Generate a histogram that grows from the bottom up.
+-- Display the number of employees in each department as a Vertical
+-- histogram with each employee represented by an instance of *.
+
+select 
+  case when e.deptno = 10 then '*' else null end deptno_10,
+  case when e.deptno = 20 then '*' else null end deptno_20,
+  case when e.deptno = 30 then '*' else null end deptno_30,
+  (select count(*) from emp d
+  where e.deptno = d.deptno and e.empno < d.empno) as rank
+from emp e;
+
+/* Output:
++-----------+-----------+-----------+------+
+| deptno_10 | deptno_20 | deptno_30 | rank |
++-----------+-----------+-----------+------+
+| NULL      | *         | NULL      |    4 |
+| NULL      | NULL      | *         |    5 |
+| NULL      | NULL      | *         |    4 |
+| NULL      | *         | NULL      |    3 |
+| NULL      | NULL      | *         |    3 |
+| NULL      | NULL      | *         |    2 |
+| *         | NULL      | NULL      |    2 |
+| NULL      | *         | NULL      |    2 |
+| *         | NULL      | NULL      |    1 |
+| NULL      | NULL      | *         |    1 |
+| NULL      | *         | NULL      |    1 |
+| NULL      | NULL      | *         |    0 |
+| NULL      | *         | NULL      |    0 |
+| *         | NULL      | NULL      |    0 |
++-----------+-----------+-----------+------+
+14 rows in set (0.04 sec)
+*/
+
+select 
+  max(deptno_10) as d10,
+  max(deptno_20) as d20,
+  max(deptno_30) as d30
+from (
+  select
+    case when e.deptno = 10 then '*' else null end deptno_10,
+    case when e.deptno = 20 then '*' else null end deptno_20,
+    case when e.deptno = 30 then '*' else null end deptno_30,
+    (select count(*) from emp d
+    where e.deptno = d.deptno and e.empno < d.empno) as rank
+  from emp e
+) x
+group by rank
+order by 1 desc, 2 desc, 3 desc;
+
+/* Output:
++------+------+------+
+| d10  | d20  | d30  |
++------+------+------+
+| *    | *    | *    |
+| *    | *    | *    |
+| *    | *    | *    |
+| NULL | *    | *    |
+| NULL | *    | *    |
+| NULL | NULL | *    |
++------+------+------+
+6 rows in set (0.02 sec)
+*/
