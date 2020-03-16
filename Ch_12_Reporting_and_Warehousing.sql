@@ -581,3 +581,11 @@ order by 1 desc, 2 desc, 3 desc;
 +------+------+------+
 6 rows in set (0.02 sec)
 */
+
+-- 11. Returning non-group by columns
+-- Return columns in your selected list that are not also listed
+-- in the group by clause.
+
+select ename, max(sal)
+from emp 
+group by ename;
