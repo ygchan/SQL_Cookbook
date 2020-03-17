@@ -53,3 +53,6 @@ Lunch=$3
 # Using an variable in a print statement
 echo "A $Lunch costs just $6" 
 # Result: A banana costs just $15 
+
+# Moving a file
+mv /path/to/source /path/to/destination
