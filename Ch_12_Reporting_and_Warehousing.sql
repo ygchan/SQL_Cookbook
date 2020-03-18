@@ -584,8 +584,143 @@ order by 1 desc, 2 desc, 3 desc;
 
 -- 11. Returning non-group by columns
 -- Return columns in your selected list that are not also listed
--- in the group by clause.
+-- in the group by clause. This is normally not possible, 
+-- as such ungrouoped columns would not represent a single value
+-- per row.
+
+-- Ask: George please find the employees who earn the highest
+-- and lowest salaries in each department.
+
+select * 
+from emp;
+
+/* Output:
++-------+--------+-----------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+-----------+------+------------+------+------+--------+
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  960 | NULL |     20 |
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 | 1600 |  300 |     30 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 | 1250 |  500 |     30 |
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 3570 | NULL |     20 |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 | 1250 | 1400 |     30 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850 | NULL |     30 |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 | 2450 | NULL |     10 |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1982-12-09 | 3600 | NULL |     20 |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000 | NULL |     10 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 | 1500 |    0 |     30 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1983-01-12 | 1320 | NULL |     20 |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950 | NULL |     30 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3600 | NULL |     20 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 | 1300 | NULL |     10 |
++-------+--------+-----------+------+------------+------+------+--------+
+*/
+
+-- max salary by department
+select deptno, max(sal) 
+from emp
+group by deptno
+union all
+-- min salary by department
+select deptno, min(sal)
+from emp
+group by deptno;
+
+-- max salary by department
+select a.deptno, a.cat, a.sal, 
+  b.ename, b.job
+from (
+  select deptno, job, max(sal) as sal, 'max' as cat
+  from emp
+  group by deptno, job
+  union all
+  select deptno, job, min(sal) as sal, 'min' as cat
+  from emp
+  group by deptno, job
+  ) a
+  inner join emp b 
+    on (a.deptno = b.deptno
+    and a.job = b.job
+    and a.sal = b.sal)
+order by a.deptno, a.cat;
+
+/* Output: 
++--------+-----+------+--------+-----------+
+| deptno | cat | sal  | ename  | job       |
++--------+-----+------+--------+-----------+
+|     10 | max | 5000 | KING   | PRESIDENT |
+|     10 | max | 2450 | CLARK  | MANAGER   |
+|     10 | max | 1300 | MILLER | CLERK     |
+|     10 | min | 5000 | KING   | PRESIDENT |
+|     10 | min | 2450 | CLARK  | MANAGER   |
+|     10 | min | 1300 | MILLER | CLERK     |
+|     20 | max | 3600 | FORD   | ANALYST   |
+|     20 | max | 3570 | JONES  | MANAGER   |
+|     20 | max | 1320 | ADAMS  | CLERK     |
+|     20 | max | 3600 | SCOTT  | ANALYST   |
+|     20 | min |  960 | SMITH  | CLERK     |
+|     20 | min | 3600 | SCOTT  | ANALYST   |
+|     20 | min | 3600 | FORD   | ANALYST   |
+|     20 | min | 3570 | JONES  | MANAGER   |
+|     30 | max | 1600 | ALLEN  | SALESMAN  |
+|     30 | max | 2850 | BLAKE  | MANAGER   |
+|     30 | max |  950 | JAMES  | CLERK     |
+|     30 | min |  950 | JAMES  | CLERK     |
+|     30 | min | 2850 | BLAKE  | MANAGER   |
+|     30 | min | 1250 | WARD   | SALESMAN  |
+|     30 | min | 1250 | MARTIN | SALESMAN  |
++--------+-----+------+--------+-----------+
+21 rows in set (0.00 sec)
+*/
+
+-- As well as employees who earn the highest and lowest salaries
+-- in each job. You want to see each employee's name,
+-- the department he/she works in, his title and salary.
 
 select ename, max(sal)
 from emp 
 group by ename;
+
+-- Book's solution:
+-- Start with inline view to find the high/low salaries by Deptno/Job.
+-- Then keep only employees who make those salaries.
+
+-- PostgreSQL and MySQL
+select deptno, ename, job, sal,
+  case when sal = max_by_dept then 'TOP SAL IN DEPT' 
+       when sal = min_by_dept then 'LOW SAL IN DEPT'
+  end as dept_status,
+  case when sal = max_by_job then 'TOP SAL IN JOB'
+       when sal = min_by_job then 'LOW SAL IN JOB'
+  end as job_status
+from (
+  select e.deptno, e.ename, e.job, e.sal,
+  (select max(sal) from emp d where d.deptno = e.deptno) as max_by_dept,
+  (select min(sal) from emp d where d.deptno = e.deptno) as min_by_dept,
+  (select max(sal) from emp d where d.job = e.job) as max_by_job,
+  (select min(sal) from emp d where d.job = e.job) as min_by_job
+  from emp e
+) x
+where sal in (max_by_dept, max_by_job,
+              min_by_dept, min_by_job);
+
+/* Output:
++--------+--------+-----------+------+-----------------+----------------+
+| deptno | ename  | job       | sal  | dept_status     | job_status     |
++--------+--------+-----------+------+-----------------+----------------+
+|     20 | SMITH  | CLERK     |  960 | LOW SAL IN DEPT | NULL           |
+|     30 | ALLEN  | SALESMAN  | 1600 | NULL            | TOP SAL IN JOB |
+|     30 | WARD   | SALESMAN  | 1250 | NULL            | LOW SAL IN JOB |
+|     20 | JONES  | MANAGER   | 3570 | NULL            | TOP SAL IN JOB |
+|     30 | MARTIN | SALESMAN  | 1250 | NULL            | LOW SAL IN JOB |
+|     30 | BLAKE  | MANAGER   | 2850 | TOP SAL IN DEPT | NULL           |
+|     10 | CLARK  | MANAGER   | 2450 | NULL            | LOW SAL IN JOB |
+|     20 | SCOTT  | ANALYST   | 3600 | TOP SAL IN DEPT | TOP SAL IN JOB |
+|     10 | KING   | PRESIDENT | 5000 | TOP SAL IN DEPT | TOP SAL IN JOB |
+|     20 | ADAMS  | CLERK     | 1320 | NULL            | TOP SAL IN JOB |
+|     30 | JAMES  | CLERK     |  950 | LOW SAL IN DEPT | LOW SAL IN JOB |
+|     20 | FORD   | ANALYST   | 3600 | TOP SAL IN DEPT | TOP SAL IN JOB |
+|     10 | MILLER | CLERK     | 1300 | LOW SAL IN DEPT | NULL           |
++--------+--------+-----------+------+-----------------+----------------+
+13 rows in set (0.01 sec)
+*/
+
