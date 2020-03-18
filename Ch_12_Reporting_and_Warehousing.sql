@@ -626,7 +626,7 @@ from emp
 group by deptno;
 
 -- max salary by department
-select a.deptno, a.cat, a.sal, 
+select distinct a.deptno, a.cat, a.sal, 
   b.ename, b.job
 from (
   select deptno, job, max(sal) as sal, 'max' as cat
@@ -693,6 +693,9 @@ select deptno, ename, job, sal,
        when sal = min_by_job then 'LOW SAL IN JOB'
   end as job_status
 from (
+  -- computing each rows, their respective min/max by job/deptno
+  -- this is scalar subqueries (return single value) outside of the table
+  -- d equal to e
   select e.deptno, e.ename, e.job, e.sal,
   (select max(sal) from emp d where d.deptno = e.deptno) as max_by_dept,
   (select min(sal) from emp d where d.deptno = e.deptno) as min_by_dept,
@@ -724,3 +727,30 @@ where sal in (max_by_dept, max_by_job,
 13 rows in set (0.01 sec)
 */
 
+-- 12. Calculating Simple Subtotals
+-- Simple subtotal (or grand total)
+
+select job, sum(sal) as sal
+from emp
+group by job
+union all
+select 'TOTAL', sum(sal)
+from emp;
+
+/* Output:
++-----------+-------+
+| job       | sal   |
++-----------+-------+
+| ANALYST   |  7200 |
+| CLERK     |  4530 |
+| MANAGER   |  8870 |
+| PRESIDENT |  5000 |
+| SALESMAN  |  5600 |
+| TOTAL     | 31200 |
++-----------+-------+
+6 rows in set (0.01 sec)
+*/
+
+-- Discussion: First step is to calculate the result by job,
+-- using aggregate function SUM to return salary total by job.
+-- Then union all to supply the grand total to the above query.
