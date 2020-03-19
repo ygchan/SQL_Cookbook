@@ -754,3 +754,10 @@ from emp;
 -- Discussion: First step is to calculate the result by job,
 -- using aggregate function SUM to return salary total by job.
 -- Then union all to supply the grand total to the above query.
+
+-- 13. Calculating subtotals for all possible expression combinations
+-- Please find the sum of all salaries by deptno and by job for every job
+-- and departno combination.
+
+-- You also want to find the grand total for all salaries in table EMP.
+-- Solution: Use multiple union alls, creating different sum for each.
