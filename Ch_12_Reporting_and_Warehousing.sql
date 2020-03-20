@@ -761,3 +761,46 @@ from emp;
 
 -- You also want to find the grand total for all salaries in table EMP.
 -- Solution: Use multiple union alls, creating different sum for each.
+
+select deptno, job,
+  'TOTAL BY DEPT AND JOB' as category,
+  sum(sal) as sal
+from emp
+group by deptno, job
+union all
+select null, job, 'TOTAL BY JOB', sum(sal)
+from emp
+group by job
+union all 
+select deptno, null, 'TOTAL BY DEPT', sum(sal)
+from emp
+group by deptno
+union all
+select null, null, 'GRAND TOTAL FOR TABLE', sum(sal)
+from emp;
+
+/* Output:
++--------+-----------+-----------------------+-------+
+| deptno | job       | category              | sal   |
++--------+-----------+-----------------------+-------+
+|     10 | CLERK     | TOTAL BY DEPT AND JOB |  1300 |
+|     10 | MANAGER   | TOTAL BY DEPT AND JOB |  2450 |
+|     10 | PRESIDENT | TOTAL BY DEPT AND JOB |  5000 |
+|     20 | ANALYST   | TOTAL BY DEPT AND JOB |  7200 |
+|     20 | CLERK     | TOTAL BY DEPT AND JOB |  2280 |
+|     20 | MANAGER   | TOTAL BY DEPT AND JOB |  3570 |
+|     30 | CLERK     | TOTAL BY DEPT AND JOB |   950 |
+|     30 | MANAGER   | TOTAL BY DEPT AND JOB |  2850 |
+|     30 | SALESMAN  | TOTAL BY DEPT AND JOB |  5600 |
+|   NULL | ANALYST   | TOTAL BY JOB          |  7200 |
+|   NULL | CLERK     | TOTAL BY JOB          |  4530 |
+|   NULL | MANAGER   | TOTAL BY JOB          |  8870 |
+|   NULL | PRESIDENT | TOTAL BY JOB          |  5000 |
+|   NULL | SALESMAN  | TOTAL BY JOB          |  5600 |
+|     10 | NULL      | TOTAL BY DEPT         |  8750 |
+|     20 | NULL      | TOTAL BY DEPT         | 13050 |
+|     30 | NULL      | TOTAL BY DEPT         |  9400 |
+|   NULL | NULL      | GRAND TOTAL FOR TABLE | 31200 |
++--------+-----------+-----------------------+-------+
+18 rows in set (0.02 sec)
+*/
